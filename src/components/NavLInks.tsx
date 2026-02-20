@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 interface NavLinksProps {
   className?: string;
 }
@@ -6,21 +8,20 @@ function NavLinks({ className }: NavLinksProps) {
         { name: "Home", path: "/" },
         { name: "Menu", path: "/menu" },
         { name: "Stanze", path: "/rooms" },
-        { name: "About", path: "/about" },
     ];
 
     return (
     <>
     <ul className={className}>
         {navLinks.map((link) => (
-            <li key={link.path}>
+            <Link to={link.path} key={link.path}>
                 <a
                     href={link.path}
                     className="text-gray-600 hover:text-gray-900 font-medium transition-colors"
                 >
                     {link.name}
                 </a>
-            </li>
+            </Link >
         ))}
     </ul>
     </>);
