@@ -5,6 +5,7 @@ import App from './App.tsx'
 import { createBrowserRouter, RouterProvider, Navigate  } from 'react-router-dom'
 import HomePage from './pages/home/home.tsx'
 import Menu from './pages/menu.tsx'
+import Rooms from './pages/rooms.tsx'
 
 const router = createBrowserRouter([
   {
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       // { path: 'about', element: <AboutPage /> },
       { path: 'menu', element: <Menu /> },
-      // { path: 'rooms', element: <Rooms /> },
+      { path: 'rooms', element: <Rooms /> },
       // { path: 'contact', element: <Contact /> },
     ],
   },

@@ -12,3 +12,4 @@ function App() {
 }
 
 export default App
+//TODO - Sistemare  hgero mettre tutto in un unvoc componnte 
