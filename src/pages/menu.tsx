@@ -1,6 +1,7 @@
 import { useState } from "react";
 import MenuComponent from "../components/menuComponent/menucomponent";
 import type { MenuType } from "../types/menu";
+import { ArrowLeftRight } from "lucide-react";
 
 
 
@@ -65,15 +66,17 @@ export default function Menu() {
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 sm:px-6">
                 <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold text-white drop-shadow-lg mb-2 sm:mb-4">Menu</h1>
                 <p className="text-xs sm:text-sm md:text-lg text-white/90 max-w-2xl leading-relaxed">
-                    La nostra passione per il territorio ci ha portati a dar vita a menù che seguono la naturale stagionalità. Da noi gusterete le erbette spontanee in primavera, raccolte con pazienza da mamma Giuliana;
-                    le numerose varietà di funghi, il cui appassionato è papà Mario e la golosa pasticceria eseguita con fantasia da Emanuela.
-                    Un intera famiglia che vi accompagnerà in un viaggio culinario, dove trovano spazio molte specialità tra cui ricordiamo le lumache, la mela cotogna in ottobre, il famoso ventaglio di petto d'anatra e molto altro ancora.
+
                 </p>
             </div>
         </div>
-        <button onClick={() => setShowCardMenu(!showCardMenu)}> {showCardMenu ?  "Mostra Menu Del Giorno": "Mostra Menu Carta"}</button>
-            {showCardMenu ? <MenuComponent menu={cardMenu} /> : null}
-            <MenuComponent menu={dailyMenu} />
+        <div className="px-4 sm:px-8 pt-8 max-w-3xl mx-auto">
+            <button onClick={() => setShowCardMenu(!showCardMenu)}>
+                {showCardMenu ? "Mostra Menu Del Giorno" : "Mostra Menu Carta"}
+                 <ArrowLeftRight className="ml-2 inline-block" />
+            </button>
+        </div>
+        {showCardMenu ? <MenuComponent menu={cardMenu} /> : <MenuComponent menu={dailyMenu} />}
         </>
     );
 }
