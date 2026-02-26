@@ -1,4 +1,5 @@
 import Card from "../components/Card";
+import Hero from "../components/Hero";
 import type { RoomType } from "../types/rooms";
 
 export default function Rooms() {
@@ -55,22 +56,11 @@ export default function Rooms() {
     return (
         <div className="flex flex-col">
             {/* Hero */}
-            <div className="relative h-[50vh]">
-                <img
-                src="https://images.unsplash.com/photo-1586105251261-72a756497a11?q=80&w=958&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                alt="Mia Romagna"
-                className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center px-6">
-                <h1 className="text-5xl md:text-7xl font-bold text-white drop-shadow-lg mb-4">
-                    Le nostre camere
-                </h1>
-                <p className="text-lg md:text-2xl text-white/90 max-w-2xl leading-relaxed">
-                    Un ristorante nel cuore della campagna trevigiana, per ogni tua occasione:
-                    ricevimenti, battesimi, comunioni, cresime, feste di laurea, pranzi di lavoro o cene intime.
-                </p>
-                </div>
-            </div>
+            <Hero inputH={50} 
+            srcImg="https://images.unsplash.com/photo-1586105251261-72a756497a11?q=80&w=958&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+            altIMg="Mia Romagna" title="Le nostre camere" 
+            description="Scopri le nostre camere accoglienti e confortevoli, perfette per un soggiorno indimenticabile nella splendida campagna trevigiana. Ogni camera è arredata con cura e dotata di tutti i comfort necessari per rendere il tuo soggiorno piacevole e rilassante." 
+            />
             <div className=" m-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {arryOfRooms.map((room) => (
                     <div key={room.id} className="mb-8 ">

@@ -1,31 +1,13 @@
+import Hero from "../../components/Hero"
+
 function HomePage() {
   return (
     <div className="flex flex-col">
 
       {/* Hero */}
-      <div className="relative h-[100vh]">
-        <img
-          src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="Mia Romagna"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center px-6">
-          <h1 className="text-5xl md:text-7xl font-bold text-white drop-shadow-lg mb-4">
-            Mia Romagna
-          </h1>
-          <p className="text-lg md:text-2xl text-white/90 max-w-2xl leading-relaxed">
-            Un ristorante nel cuore della campagna trevigiana, per ogni tua occasione:
-            ricevimenti, battesimi, comunioni, cresime, feste di laurea, pranzi di lavoro o cene intime.
-          </p>
-          <a
-            href="#orari"
-            className="mt-8 px-8 py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-full transition-colors"
-          >
-            Scopri di più
-          </a>
-        </div>
-      </div>
-
+      <Hero inputH={100} srcImg="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+        altIMg="Mia Romagna" title="Mia Romagna" 
+        description="Un ristorante nel cuore della campagna trevigiana, per ogni tua occasione: ricevimenti, battesimi, comunioni, cresime, feste di laurea, pranzi di lavoro o cene intime." />
       {/* Chi siamo */}
       <section className="py-16 px-6 bg-white text-center">
         <div className="max-w-3xl mx-auto">
