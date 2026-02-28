@@ -1,5 +1,3 @@
-import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
-import Card from "../components/Card";
 import Hero from "../components/Hero";
 import type { RoomType } from "../types/rooms";
 import RoomCard from "../components/RoomCard";
@@ -48,23 +46,9 @@ export default function Rooms() {
             description="Scopri le nostre camere accoglienti e confortevoli, perfette per un soggiorno indimenticabile nella splendida campagna trevigiana. Ogni camera è arredata con cura e dotata di tutti i comfort necessari per rendere il tuo soggiorno piacevole e rilassante." 
             />
             <div className="m-8 flex flex-col gap-4">
-                {arryOfRooms.map((room, index) => (
+                {arryOfRooms.map((room) => (
                     <div key={room.id}>
                         <RoomCard room={room} />
-                        {/* <Card>
-                            <div className="flex flex-col sm:flex-row cursor-pointer gap-4">
-                                <div className="relative flex items-center justify-center group">
-                                    <ArrowBigLeft className="text-black absolute left-0 z-10 p-1 bg-white/50 rounded-full hover:bg-white transition-colors" />
-                                    <img className="h-56 w-full sm:h-48 sm:w-64 lg:h-64 lg:w-80 xl:h-72 xl:w-96 object-cover rounded-md flex-shrink-0" src={room.listOfImages[0]} alt={room.name} />
-                                    <ArrowBigRight className="text-black absolute right-0 z-10 p-1 bg-white/50 rounded-full hover:bg-white transition-colors"/>
-                                </div> 
-                                <div className="flex flex-col gap-2">
-                                    <h2 className="text-2xl font-bold text-gray-700">{room.name}</h2>
-                                    <p className="text-gray-500 text-sm">Posti: {room.beds} &nbsp;·&nbsp; {room.priceNight}€ / notte</p>
-                                    <p className="text-gray-600">{room.description}</p>
-                                </div>
-                            </div>
-                        </Card> */}
                     </div>
                 ))}
             </div>

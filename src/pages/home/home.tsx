@@ -49,6 +49,7 @@ function HomePage() {
               </div>
             ))}
           </div>
+                    <p className="font-semibold text-gray-800">Telefono: +39 350 585 0022</p>
         </div>
       </section>
 
@@ -90,7 +91,6 @@ function HomePage() {
             </p>
           </div>
       </section>
-      {/* Posizione  */}
     <section className="py-12 bg-gray-50">
         <h2 className="text-3xl text-black font-bold mb-6 text-center">Dove Trovarci</h2>
         <div className="overflow-hidden shadow-lg h-96">
@@ -118,10 +118,12 @@ function HomePage() {
     </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-gray-400 text-center py-6 text-sm">
-        © {new Date().getFullYear()} Mia Romagna — Tutti i diritti riservati
-      </footer>
-
+    <footer className="bg-gray-900 text-gray-400 text-center py-6 text-sm flex flex-col md:flex-row md:justify-between md:items-center md:px-8">
+          <p className="font-semibold ">La Mia Romagna</p>
+          <p className="font-semibold ">Telefono: +39 350 585 0022</p>
+          <p className="font-semibold ">E-mail: </p>
+      <div>© {new Date().getFullYear()} Mia Romagna — Tutti i diritti riservati</div>
+    </footer>
     </div>
   );
 }
