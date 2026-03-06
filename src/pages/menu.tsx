@@ -3,7 +3,7 @@ import MenuComponent from "../components/menuComponent/menucomponent";
 import type { MenuType } from "../types/menu";
 import { ArrowLeftRight } from "lucide-react";
 import Hero from "../components/Hero";
-
+import { useSearchParams } from "react-router-dom";
 
 
 export default function Menu() {
@@ -54,8 +54,8 @@ export default function Menu() {
             }
         ]
     }
-
-    const [showCardMenu, setShowCardMenu] = useState(true);
+    const [searchParams]  = useSearchParams();
+    const [showCardMenu, setShowCardMenu] = useState(searchParams.get("tipo")!=="giorno");
     return (
         <> 
         <Hero 

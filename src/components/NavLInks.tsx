@@ -15,7 +15,7 @@ function NavLinks({ className, classLink, onClose }: NavLinksProps) {
     return (
     <ul className={className}>
         {navLinks.map((link) => (
-            <Link  to={link.path} key={link.path} className={classLink} onClick={onClose}>
+            <Link to={link.path} key={link.path} className={classLink} onClick={onClose}>
                 {link.name}
             </Link>
         ))}
