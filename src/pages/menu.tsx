@@ -1,61 +1,68 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MenuComponent from "../components/menuComponent/menucomponent";
 import type { MenuType } from "../types/menu";
 import { ArrowLeftRight } from "lucide-react";
 import Hero from "../components/Hero";
 import { useSearchParams } from "react-router-dom";
-
+import axios from "axios";
+const api = axios.create({ baseURL: import.meta.env.VITE_API_URL });
 
 export default function Menu() {
-    const cardMenu : MenuType = {
-        id: 1,
-        name: "Menu Card",
-        food: [
-            {
-                id: 1,
-                type: "primo",
-                name: "Pasta al pomodoro",
-                description: "Pasta fresca con sugo di pomodoro e basilico",
-                price: 8.50,
-            },
-            {
-                id: 2, 
-                type: "primo",
-                name: "Risotto ai funghi",
-                description: "Risotto cremoso con funghi porcini e parmigiano",
-                price: 12.00,
-            },
-            {
-                id: 3,  
-                type: "secondo",
-                name: "Pizza margherita",
-                description: "Pizza classica con pomodoro, mozzarella e basilico",
-                price: 10.00,
-            },
-        ],
-    }
-    const dailyMenu : MenuType = {
-        id: 2,
-        name: "Daily Menu",
-        food: [
-            {
-                id: 1,
-                type: "primo",
-                name: "Zuppa del giorno",
-                description: "Zuppa calda con ingredienti freschi di stagione",
-                price: 6.00,
-            },
-            {
-                id: 2,
-                type: "contorno",
-                name: "Insalata mista",
-                description: "Insalata fresca con verdure di stagione e vinaigrette",
-                price: 7.50,
-            }
-        ]
-    }
+    const [cardMenu, setMenu] = useState<MenuType[]>([]);
+    const [dailyMenu, setDailyMenu] = useState<MenuType[]>([]);
+    // const cardMenu : MenuType = {
+    //     id: 1,
+    //     name: "Menu Card",
+    //     food: [
+    //         {
+    //             id: 1,
+    //             type: "primo",
+    //             name: "Pasta al pomodoro",
+    //             description: "Pasta fresca con sugo di pomodoro e basilico",
+    //             price: 8.50,
+    //         },
+    //         {
+    //             id: 2, 
+    //             type: "primo",
+    //             name: "Risotto ai funghi",
+    //             description: "Risotto cremoso con funghi porcini e parmigiano",
+    //             price: 12.00,
+    //         },
+    //         {
+    //             id: 3,  
+    //             type: "secondo",
+    //             name: "Pizza margherita",
+    //             description: "Pizza classica con pomodoro, mozzarella e basilico",
+    //             price: 10.00,
+    //         },
+    //     ],
+    // }
+    // const dailyMenu : MenuType = {
+    //     id: 2,
+    //     name: "Daily Menu",
+    //     food: [
+    //         {
+    //             id: 1,
+    //             type: "primo",
+    //             name: "Zuppa del giorno",
+    //             description: "Zuppa calda con ingredienti freschi di stagione",
+    //             price: 6.00,
+    //         },
+    //         {
+    //             id: 2,
+    //             type: "contorno",
+    //             name: "Insalata mista",
+    //             description: "Insalata fresca con verdure di stagione e vinaigrette",
+    //             price: 7.50,
+    //         }
+    //     ]
+    // }
     const [searchParams]  = useSearchParams();
     const [showCardMenu, setShowCardMenu] = useState(searchParams.get("tipo")!=="giorno");
+    useEffect(() => {
+        api.get("api/menu").then((res : any) => setMenu(res.data))
+        api.get("api/daily-menu/").then((res: any) => setDailyMenu(Array.isArray(res.data) ? res.data : [res.data]))
+    }, [])
     return (
         <> 
         <Hero 
@@ -69,7 +76,15 @@ export default function Menu() {
                  <ArrowLeftRight className="ml-2 inline-block" />
             </button>
         </div>
-        {showCardMenu ? <MenuComponent menu={cardMenu} /> : <MenuComponent menu={dailyMenu} />}
+        {showCardMenu
+            ? cardMenu.map(m => <MenuComponent key={m.id} menu={m} />)
+            : dailyMenu.map(m => <MenuComponent key={m.id} menu={m} />)}
         </>
     );
 }
+
+/*
+api.get("api/menu").then((res: any) => setMenu(Array.isArray(res.data) ? res.data : [res.data]))
+api.get("api/daily-menu/").then((res: any) => setDailyMenu(Array.isArray(res.data) ? res.data : [res.data]))
+
+*/
