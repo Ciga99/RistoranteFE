@@ -4,5 +4,5 @@ export type RoomType = {
     description: string;
     beds: number;
     priceNight: number;
-    listOfImages: string[];
+    images: any[];
 }

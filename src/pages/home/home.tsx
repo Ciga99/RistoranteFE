@@ -1,10 +1,10 @@
 import Hero from "../../components/Hero"
 import { useNavigate } from "react-router";
-import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 
 function HomePage() {
   const address = "Via Str. Vecchia, 8, 31028 TV, Italia";
   const mapUrl = "https://maps.google.com/maps?q=45.8134318,12.3525864&z=18&output=embed";
+  // Questo è un URL di esempio generico per incorporare mappe tramite iframe
   const navigate = useNavigate();
 
   return (
@@ -14,7 +14,7 @@ function HomePage() {
       <Hero inputH={100} srcImg="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
         altIMg="Mia Romagna" title="Mia Romagna" 
         description="Un ristorante nel cuore della campagna trevigiana, per ogni tua occasione: ricevimenti, battesimi, comunioni, cresime, feste di laurea, pranzi di lavoro o cene intime." />
-      {/* Chi siamo */}
+        {/* Chi siamo */}
       <section className="py-16 px-6 bg-white text-center">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl font-bold text-gray-800 mb-4">La nostra storia</h2>
