@@ -1,6 +1,6 @@
 export default function Hero ({inputH,srcImg, altIMg, title,description} : {inputH: number, srcImg: string, altIMg: string, title: string, description: string}) {
     return (
-      <div className={`relative h-[${inputH}vh]`}>
+      <div className="relative w-full" style={{ height: `${inputH}vh` }}>
         <img
           src={srcImg}
           alt={altIMg}
