@@ -12,7 +12,7 @@ function HomePage() {
 
       {/* Hero */}
       <Hero inputH={100} srcImg="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-        altIMg="Mia Romagna" title="Mia Romagna" 
+        altIMg="Mia Romagna" title="Mia Romagna"   
         description="Un ristorante nel cuore della campagna trevigiana, per ogni tua occasione: ricevimenti, battesimi, comunioni, cresime, feste di laurea, pranzi di lavoro o cene intime." />
         {/* Chi siamo */}
       <section className="py-16 px-6 bg-white text-center">
