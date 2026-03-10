@@ -43,7 +43,7 @@ function NavBar() {
                 >
                 Mia Romagna
             </h1>
-            <NavLinks className="text-gray-800 hidden md:flex gap-6 text" classLink="hover:bg-amber-500 text-gray-800 hover:text-gray-900 font-medium transition-colors" />
+            <NavLinks className="text-gray-800 hidden md:flex gap-6 text" classLink="relative pb-1 border-b-2 border-transparent hover:border-amber-500 text-gray-800 hover:text-gray-900 font-medium transition-colors" />
         </nav>
         </>
     );
