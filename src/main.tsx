@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider, Navigate  } from 'react-router-dom
 import HomePage from './pages/home/home.tsx'
 import Menu from './pages/menu.tsx'
 import Rooms from './pages/rooms.tsx'
+import Login from './pages/login.tsx'
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
   //     { path: 'rooms', element: <GestisciRooms /> },
   //   ],
   // },
+  { path: 'login', element: <Login/>},
   { path: '*', element: <Navigate to="/" replace /> }//* inidica qualsici cosa scritta 
 ])
 
