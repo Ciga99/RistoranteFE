@@ -23,7 +23,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // FUNZIONE LOGIN: chiamata quando premi "Accedi"
   const login = async (username: string, password: string) => {
     // Manda la richiesta HTTP al backend
-    const res = await api.post("api/token/", { username, password });
+    const res = await api.post("api/auth/login/", { username, password });
     // res.data sarà tipo: { access: "eyJ...", refresh: "eyJ..." }
 
     const accessToken = res.data.access;
