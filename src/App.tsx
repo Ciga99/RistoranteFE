@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 function App() {
   return (
     <div className="min-h-screen w-full">
-      <NavBar/>
+      <NavBar title='Mia Romagna' navLinks={[{ name: "Home", path: "/" },{ name: "Menu", path: "/menu" },{ name: "Stanze", path: "/rooms" }]}/>
       <Outlet/>
     </div>
   )
