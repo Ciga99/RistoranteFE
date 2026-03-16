@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 
 interface NavBarProps {
   title?: string;                          // default: "Mia Romagna"
-  navLinks: { name: string; path: string }[];  // passati a NavLinks
+  navLinks?: { name: string; path: string }[];  // passati a NavLinks
   sideNavOnly?: boolean;                   // default: false
 }
 

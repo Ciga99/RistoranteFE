@@ -149,18 +149,18 @@ export default function AdminMenuPage() {
           onSave={handleSave}
         >
           <label className="block text-sm font-medium text-gray-700">Tipo</label>
-          <select name="type" value={form.type} onChange={handleChange} className="w-full border rounded px-3 py-2">
+          <select name="type" value={form.type} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 text-gray-900">
             <option value="menu_card">Carta</option>
             <option value="daily_menu">Menu del giorno</option>
           </select>
 
           <label className="block text-sm font-medium text-gray-700 mt-2">Note</label>
-          <textarea name="notes" value={form.notes} onChange={handleChange} className="w-full border rounded px-3 py-2" rows={3} />
+          <textarea name="notes" value={form.notes} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 text-gray-900" rows={3} />
 
           {form.type === "daily_menu" && (
             <>
               <label className="block text-sm font-medium text-gray-700 mt-2">Data</label>
-              <input type="date" name="date" value={form.date} onChange={handleChange} className="w-full border rounded px-3 py-2" />
+              <input type="date" name="date" value={form.date} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 text-gray-900" />
             </>
           )}
 
