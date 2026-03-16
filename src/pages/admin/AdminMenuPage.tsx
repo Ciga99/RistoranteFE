@@ -3,6 +3,8 @@ import { api } from "../../services/api";
 import { AdminModal } from "../../components/adminComponent/AdminModal";
 import { Pencil, Trash2, Plus } from "lucide-react";
 import type { MenuType } from "../../types/menu";
+import { useNavigate } from "react-router-dom";
+import { AdminTable } from "../../components/adminComponent/AdminTable";
 
 // I campi del form vuoto per aggiungere un nuovo menu
 const emptyForm = {
@@ -15,15 +17,13 @@ const emptyForm = {
 
 export default function AdminMenuPage() {
   // "menus" è lo scaffale dove mettiamo tutti i menu arrivati dal server
+  const navigate = useNavigate();
   const [menus, setMenus] = useState<MenuType[]>([]);
   const [loading, setLoading] = useState(true);
-
   // "modalOpen" dice se il pop-up è aperto o chiuso
   const [modalOpen, setModalOpen] = useState(false);
-
   // "editingMenu" contiene il menu che stiamo modificando (null = ne stiamo aggiungendo uno nuovo)
   const [editingMenu, setEditingMenu] = useState<MenuType | null>(null);
-
   // "form" contiene i valori scritti nel form
   const [form, setForm] = useState(emptyForm);
 
@@ -68,10 +68,10 @@ export default function AdminMenuPage() {
   };
 
   // Elimina un menu dopo conferma
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (menu: MenuType) => {
     if (!confirm("Sicuro di voler eliminare questo menu?")) return;
     try {
-      await api.delete(`api/menu/${id}/`);
+      await api.delete(`api/menu/${menu.id}/`);
       fetchMenus();
     } catch (err) {
       console.error("Errore nell'eliminare", err);
@@ -98,6 +98,42 @@ export default function AdminMenuPage() {
     setModalOpen(true);
   };
 
+    // Definizione delle colonne della tabella menu
+  const columns = [
+    {
+      header: "Tipo",
+      render: (m: MenuType) => (
+        <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
+          m.type === "daily_menu" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"
+        }`}>
+          {m.type === "daily_menu" ? "Menu del giorno" : "Carta"}
+        </span>
+      ),
+    },
+    {
+      header: "Note",
+      render: (m: MenuType) => <span className="text-gray-700">{m.notes || "—"}</span>,
+    },
+    {
+      header: "Data",
+      render: (m: MenuType) => <span className="text-gray-600">{m.date || "—"}</span>,
+    },
+    {
+      header: "N° Piatti",
+      render: (m: MenuType) => <span className="text-gray-600">{m.dishes?.length ?? 0}</span>,
+    },
+    {
+      header: "Stato",
+      render: (m: MenuType) => (
+        <span className={`text-xs px-2 py-0.5 rounded-full ${
+          m.is_active ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"
+        }`}>
+          {m.is_active ? "Attivo" : "Non attivo"}
+        </span>
+      ),
+    },
+  ];
+
   if (loading) return <p className="p-8 text-center text-gray-500">Caricamento...</p>;
 
   return (
@@ -112,35 +148,15 @@ export default function AdminMenuPage() {
           <Plus size={18} /> Aggiungi Menu
         </button>
       </div>
+      {/*Tabella riutilizzabile*/}
+      <AdminTable
+        columns={columns}
+        data={menus}
+        onEdit={openEdit}
+        onDelete={handleDelete}
+        onDetail={(m) => navigate(`/admin/menu-admin/${m.id}`)}>
 
-      {/* Griglia di card */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {menus.map(menu => (
-          <div key={menu.id} className="bg-white rounded-lg shadow p-4 border border-gray-100">
-            {/* Badge tipo */}
-            <span className={`text-xs font-semibold px-2 py-1 rounded-full ${menu.type === "daily_menu" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"}`}>
-              {menu.type === "daily_menu" ? "Menu del giorno" : "Carta"}
-            </span>
-            <p className="mt-2 text-gray-700 text-sm">{menu.notes || "Nessuna nota"}</p>
-            {menu.date && <p className="text-xs text-gray-400 mt-1">Data: {menu.date}</p>}
-            <p className="text-xs text-gray-400 mt-1">Piatti: {menu.dishes?.length ?? 0}</p>
-            {/* Badge attivo/inattivo */}
-            <span className={`text-xs mt-2 inline-block px-2 py-0.5 rounded-full ${menu.is_active ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"}`}>
-              {menu.is_active ? "Attivo" : "Non attivo"}
-            </span>
-            {/* Bottoni azione */}
-            <div className="flex gap-2 mt-3">
-              <button onClick={() => openEdit(menu)} className="flex items-center gap-1 text-sm text-amber-600 hover:text-amber-800">
-                <Pencil size={14} /> Modifica
-              </button>
-              <button onClick={() => handleDelete(menu.id)} className="flex items-center gap-1 text-sm text-red-500 hover:text-red-700">
-                <Trash2 size={14} /> Elimina
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-
+      </AdminTable>
       {/* Modal aggiunta/modifica */}
       {modalOpen && (
         <AdminModal

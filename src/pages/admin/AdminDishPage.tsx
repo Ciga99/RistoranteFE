@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { api } from "../../services/api";
 import type { DishType } from "../../types/menu";
 import { AdminModal } from "../../components/adminComponent/AdminModal";
-import { Pencil, Trash2, Plus } from "lucide-react";
+import { AdminTable } from "../../components/adminComponent/AdminTable";
+import { Plus } from "lucide-react";
 
 const DISH_TYPES = ["antipasto", "primo", "secondo", "contorno", "dolce", "bevande"] as const;
 
@@ -59,10 +60,10 @@ export default function AdminDishPage() {
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (dish: DishType) => {
     if (!confirm("Sicuro di voler eliminare questo piatto?")) return;
     try {
-      await api.delete(`api/dishes/${id}/`);
+      await api.delete(`api/dishes/${dish.id}/`);
       fetchDishes();
     } catch (err) {
       console.error("Errore nell'eliminare", err);
@@ -81,6 +82,42 @@ export default function AdminDishPage() {
     setModalOpen(true);
   };
 
+  // Colonne per la tabella piatti
+  const columns = [
+    {
+      header: "Nome",
+      render: (d: DishType) => <span className="font-medium text-gray-800">{d.name}</span>,
+    },
+    {
+      header: "Tipo",
+      render: (d: DishType) => (
+        <span className="text-xs font-semibold px-2 py-1 rounded-full bg-amber-100 text-amber-700 capitalize">
+          {d.type}
+        </span>
+      ),
+    },
+    {
+      header: "Descrizione",
+      render: (d: DishType) => (
+        <span className="text-gray-500 text-xs max-w-48 block truncate">{d.description || "—"}</span>
+      ),
+    },
+    {
+      header: "Prezzo",
+      render: (d: DishType) => <span className="font-bold text-amber-600">€ {d.price}</span>,
+    },
+    {
+      header: "Stato",
+      render: (d: DishType) => (
+        <span className={`text-xs px-2 py-0.5 rounded-full ${
+          d.is_active ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"
+        }`}>
+          {d.is_active ? "Attivo" : "Non attivo"}
+        </span>
+      ),
+    },
+  ];
+
   if (loading) return <p className="p-8 text-center text-gray-500">Caricamento...</p>;
 
   return (
@@ -92,29 +129,13 @@ export default function AdminDishPage() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {dishes.map(dish => (
-          <div key={dish.id} className="bg-white rounded-lg shadow p-4 border border-gray-100">
-            <span className="text-xs font-semibold px-2 py-1 rounded-full bg-amber-100 text-amber-700 capitalize">
-              {dish.type}
-            </span>
-            <h3 className="font-semibold text-gray-800 mt-2">{dish.name}</h3>
-            <p className="text-sm text-gray-500 mt-1">{dish.description}</p>
-            <p className="text-amber-600 font-bold mt-2">€ {dish.price}</p>
-            <span className={`text-xs mt-1 inline-block px-2 py-0.5 rounded-full ${dish.is_active ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"}`}>
-              {dish.is_active ? "Attivo" : "Non attivo"}
-            </span>
-            <div className="flex gap-2 mt-3">
-              <button onClick={() => openEdit(dish)} className="flex items-center gap-1 text-sm text-amber-600 hover:text-amber-800">
-                <Pencil size={14} /> Modifica
-              </button>
-              <button onClick={() => handleDelete(dish.id)} className="flex items-center gap-1 text-sm text-red-500 hover:text-red-700">
-                <Trash2 size={14} /> Elimina
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+      {/* Stessa AdminTable, colonne diverse */}
+      <AdminTable
+        columns={columns}
+        data={dishes}
+        onEdit={openEdit}
+        onDelete={handleDelete}
+      />
 
       {modalOpen && (
         <AdminModal

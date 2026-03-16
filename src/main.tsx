@@ -14,6 +14,7 @@ import AdminMenuPage from './pages/admin/AdminMenuPage.tsx'
 import AdminDishPage from './pages/admin/AdminDishPage.tsx'
 import AdminRoomsPage from './pages/admin/AdminRoomsPage.tsx'
 import AdminCalendarPage from './pages/admin/AdminCalendarPage.tsx'
+import AdminMenuDetailPage from './pages/admin/AdminMenuDetailPage.tsx'
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,7 @@ const router = createBrowserRouter([
         ),
         children: [
           { path: 'menu-admin', element: <AdminMenuPage /> },
+          { path: 'menu-admin/:id', element: <AdminMenuDetailPage /> },
           { path: 'dish-admin', element: <AdminDishPage /> },
           { path: 'rooms-admin', element: <AdminRoomsPage /> },
           { path: 'calendar-admin', element: <AdminCalendarPage /> },
