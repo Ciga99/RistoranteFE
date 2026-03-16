@@ -10,6 +10,10 @@ import Login from './pages/login.tsx'
 import { AuthProvider } from './context/AuthContext.tsx'
 import AdminLayout from './pages/admin/AdminHome.tsx'
 import { PrivateRoute } from './components/adminComponent/PrivateRoute.tsx'
+import AdminMenuPage from './pages/admin/AdminMenuPage.tsx'
+import AdminDishPage from './pages/admin/AdminMenuPage.tsx'
+import AdminRoomsPage from './pages/admin/AdminRoomsPage.tsx'
+import AdminCalendarPage from './pages/admin/AdminCalendarPage.tsx'
 
 const router = createBrowserRouter([
   {
@@ -34,10 +38,10 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
         children: [
-          // { index: true, element: <AdminDashboard /> },
-          // { path: 'menu', element: <AdminMenu /> },
-          // { path: 'rooms', element: <AdminRooms /> },
-          // { path: 'booking', element: <AdminBooking /> },
+          { path: 'menu-admin"', element: <AdminMenuPage /> },
+          { path: 'dish-admin"', element: <AdminDishPage /> },
+          { path: 'rooms-admin', element: <AdminRoomsPage /> },
+          { path: 'calendar-admin', element: <AdminCalendarPage /> },
         ],
       },
       { path: 'login', element: <Login /> },
