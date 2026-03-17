@@ -11,9 +11,13 @@ import { AuthProvider } from './context/AuthContext.tsx'
 import AdminLayout from './pages/admin/AdminHome.tsx'
 import { PrivateRoute } from './components/adminComponent/PrivateRoute.tsx'
 import AdminMenuPage from './pages/admin/AdminMenuPage.tsx'
+import AdminMenuFormPage from './pages/admin/AdminMenuFormPage.tsx'
+import AdminMenuDishFormPage from './pages/admin/AdminMenuDishFormPage.tsx'
 import AdminDishPage from './pages/admin/AdminDishPage.tsx'
+import AdminDishFormPage from './pages/admin/AdminDishFormPage.tsx'
 import AdminRoomsPage from './pages/admin/AdminRoomsPage.tsx'
 import AdminCalendarPage from './pages/admin/AdminCalendarPage.tsx'
+import AdminBookingFormPage from './pages/admin/AdminBookingFormPage.tsx'
 import AdminMenuDetailPage from './pages/admin/AdminMenuDetailPage.tsx'
 
 const router = createBrowserRouter([
@@ -39,11 +43,22 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
         children: [
+          // Menu
           { path: 'menu-admin', element: <AdminMenuPage /> },
+          { path: 'menu-admin/new', element: <AdminMenuFormPage /> },
+          { path: 'menu-admin/:id/edit', element: <AdminMenuFormPage /> },
+          { path: 'menu-admin/:menuId/add-dish', element: <AdminMenuDishFormPage /> },
           { path: 'menu-admin/:id', element: <AdminMenuDetailPage /> },
+          // Piatti
           { path: 'dish-admin', element: <AdminDishPage /> },
+          { path: 'dish-admin/new', element: <AdminDishFormPage /> },
+          { path: 'dish-admin/:id/edit', element: <AdminDishFormPage /> },
+          // Stanze
           { path: 'rooms-admin', element: <AdminRoomsPage /> },
+          // Calendario / Prenotazioni
           { path: 'calendar-admin', element: <AdminCalendarPage /> },
+          { path: 'calendar-admin/new', element: <AdminBookingFormPage /> },
+          { path: 'calendar-admin/:id/edit', element: <AdminBookingFormPage /> },
         ],
       },
       { path: 'login', element: <Login /> },

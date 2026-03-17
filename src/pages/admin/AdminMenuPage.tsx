@@ -1,33 +1,15 @@
 import { useEffect, useState } from "react";
 import { api } from "../../services/api";
-import { AdminModal } from "../../components/adminComponent/AdminModal";
-import { Pencil, Trash2, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import type { MenuType } from "../../types/menu";
 import { useNavigate } from "react-router-dom";
 import { AdminTable } from "../../components/adminComponent/AdminTable";
 
-// I campi del form vuoto per aggiungere un nuovo menu
-const emptyForm = {
-  type: "menu_card" as "menu_card" | "daily_menu",
-  notes: "",
-  date: "",
-  day_of_week: "",
-  is_active: true,
-};
-
 export default function AdminMenuPage() {
-  // "menus" è lo scaffale dove mettiamo tutti i menu arrivati dal server
   const navigate = useNavigate();
   const [menus, setMenus] = useState<MenuType[]>([]);
   const [loading, setLoading] = useState(true);
-  // "modalOpen" dice se il pop-up è aperto o chiuso
-  const [modalOpen, setModalOpen] = useState(false);
-  // "editingMenu" contiene il menu che stiamo modificando (null = ne stiamo aggiungendo uno nuovo)
-  const [editingMenu, setEditingMenu] = useState<MenuType | null>(null);
-  // "form" contiene i valori scritti nel form
-  const [form, setForm] = useState(emptyForm);
 
-  // Funzione che chiede i menu al server
   const fetchMenus = async () => {
     setLoading(true);
     try {
@@ -40,34 +22,8 @@ export default function AdminMenuPage() {
     }
   };
 
-  // Carica i menu appena la pagina si apre
   useEffect(() => { fetchMenus(); }, []);
 
-  // Aggiorna il form quando l'utente scrive in un campo
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value, type } = e.target;
-    setForm(prev => ({
-      ...prev,
-      [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
-    }));
-  };
-
-  // Salva: se stiamo modificando → PUT, se stiamo aggiungendo → POST
-  const handleSave = async () => {
-    try {
-      if (editingMenu) {
-        await api.put(`api/menu/${editingMenu.id}/`, form);
-      } else {
-        await api.post("api/menu/", form);
-      }
-      setModalOpen(false);
-      fetchMenus(); // ricarica la lista aggiornata
-    } catch (err) {
-      console.error("Errore nel salvare", err);
-    }
-  };
-
-  // Elimina un menu dopo conferma
   const handleDelete = async (menu: MenuType) => {
     if (!confirm("Sicuro di voler eliminare questo menu?")) return;
     try {
@@ -78,27 +34,6 @@ export default function AdminMenuPage() {
     }
   };
 
-  // Apre il modal per modificare un menu esistente
-  const openEdit = (menu: MenuType) => {
-    setEditingMenu(menu);
-    setForm({
-      type: menu.type,
-      notes: menu.notes ?? "",
-      date: menu.date ?? "",
-      day_of_week: menu.day_of_week?.toString() ?? "",
-      is_active: menu.is_active,
-    });
-    setModalOpen(true);
-  };
-
-  // Apre il modal per aggiungere un nuovo menu
-  const openAdd = () => {
-    setEditingMenu(null);
-    setForm(emptyForm);
-    setModalOpen(true);
-  };
-
-    // Definizione delle colonne della tabella menu
   const columns = [
     {
       header: "Tipo",
@@ -138,54 +73,23 @@ export default function AdminMenuPage() {
 
   return (
     <div className="p-6">
-      {/* Intestazione pagina */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-amber-700">Gestione Menu</h1>
+        <h2 className="text-2xl font-bold text-amber-700">Gestione Menu</h2>
         <button
-          onClick={openAdd}
+          onClick={() => navigate("/admin/menu-admin/new")}
           className="flex items-center gap-2 bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700"
         >
           <Plus size={18} /> Aggiungi Menu
         </button>
       </div>
-      {/*Tabella riutilizzabile*/}
+
       <AdminTable
         columns={columns}
         data={menus}
-        onEdit={openEdit}
+        onEdit={(m) => navigate(`/admin/menu-admin/${m.id}/edit`)}
         onDelete={handleDelete}
-        onDetail={(m) => navigate(`/admin/menu-admin/${m.id}`)}>
-
-      </AdminTable>
-      {/* Modal aggiunta/modifica */}
-      {modalOpen && (
-        <AdminModal
-          title={editingMenu ? "Modifica Menu" : "Aggiungi Menu"}
-          onClose={() => setModalOpen(false)}
-          onSave={handleSave}
-        >
-          <label className="block text-sm font-medium text-gray-700">Tipo</label>
-          <select name="type" value={form.type} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 text-gray-900">
-            <option value="menu_card">Carta</option>
-            <option value="daily_menu">Menu del giorno</option>
-          </select>
-
-          <label className="block text-sm font-medium text-gray-700 mt-2">Note</label>
-          <textarea name="notes" value={form.notes} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 text-gray-900" rows={3} />
-
-          {form.type === "daily_menu" && (
-            <>
-              <label className="block text-sm font-medium text-gray-700 mt-2">Data</label>
-              <input type="date" name="date" value={form.date} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 text-gray-900" />
-            </>
-          )}
-
-          <label className="flex items-center gap-2 mt-3 cursor-pointer">
-            <input type="checkbox" name="is_active" checked={form.is_active} onChange={handleChange} />
-            <span className="text-sm text-gray-700">Attivo</span>
-          </label>
-        </AdminModal>
-      )}
+        onDetail={(m) => navigate(`/admin/menu-admin/${m.id}`)}
+      />
     </div>
   );
 }
