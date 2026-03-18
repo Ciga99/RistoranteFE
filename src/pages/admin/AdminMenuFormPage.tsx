@@ -72,7 +72,7 @@ export default function AdminMenuFormPage() {
   if (loading) return <p className="p-8 text-center text-gray-500">Caricamento...</p>;
 
   return (
-    <div className="p-6 max-w-xl">
+    <div className="p-6">
       <HeaderFrom title =  {isEdit ? "Modifica Menu" : "Aggiungi Menu"} navigateUrl="/admin/menu-admin"/>
       <div className="bg-white rounded-lg shadow p-6 border border-gray-100 flex flex-col gap-4">
         <div>
@@ -89,10 +89,25 @@ export default function AdminMenuFormPage() {
         </div>
 
         {form.type === "daily_menu" && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Data</label>
-            <input type="date" name="date" value={form.date} onChange={handleChange} className={inputCls} />
-          </div>
+          <>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Data</label>
+              <input type="date" name="date" value={form.date} onChange={handleChange} className={inputCls} />
+            </div>
+            <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Giorno della settimana</label>
+                <select name="type" value={form.day_of_week || ""} onChange={handleChange} className={inputCls}>
+                  <option value="">Seleziona un giorno...</option>
+                  <option value="monday">Lunedì</option>
+                  <option value="tuesday">Martedì</option>
+                  <option value="wednesday">Mercoledì</option>
+                  <option value="thursday">Giovedì</option>
+                  <option value="friday">Venerdì</option>
+                  <option value="saturday">Sabato</option>
+                  <option value="sunday">Domenica</option>
+                </select>
+            </div>
+          </>
         )}
 
         <label className="flex items-center gap-2 cursor-pointer">
