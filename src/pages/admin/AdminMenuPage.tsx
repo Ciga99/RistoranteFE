@@ -1,14 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { api } from "../../services/api";
 import { Plus } from "lucide-react";
 import type { MenuType } from "../../types/menu";
 import { useNavigate } from "react-router-dom";
 import { AdminTable } from "../../components/adminComponent/AdminTable";
 
+const selectCls = "border border-gray-300 rounded px-3 py-1.5 text-sm text-gray-700 bg-white";
+
 export default function AdminMenuPage() {
   const navigate = useNavigate();
   const [menus, setMenus] = useState<MenuType[]>([]);
   const [loading, setLoading] = useState(true);
+  const [filterActive, setFilterActive] = useState<"all" | "active" | "inactive">("all");
+  const [filterType, setFilterType] = useState<"all" | "daily_menu" | "menu_card">("all");
 
   const fetchMenus = async () => {
     setLoading(true);
@@ -23,6 +27,12 @@ export default function AdminMenuPage() {
   };
 
   useEffect(() => { fetchMenus(); }, []);
+
+  const filteredMenus = useMemo(() => {
+    return menus
+      .filter(m => filterActive === "all" ? true : filterActive === "active" ? m.is_active : !m.is_active)
+      .filter(m => filterType === "all" ? true : m.type === filterType);
+  }, [menus, filterActive, filterType]);
 
   const handleDelete = async (menu: MenuType) => {
     if (!confirm("Sicuro di voler eliminare questo menu?")) return;
@@ -83,9 +93,31 @@ export default function AdminMenuPage() {
         </button>
       </div>
 
+      <div className="flex gap-3 mb-4">
+        <select
+          value={filterActive}
+          onChange={e => setFilterActive(e.target.value as "all" | "active" | "inactive")}
+          className={selectCls}
+        >
+          <option value="all">Tutti gli stati</option>
+          <option value="active">Attivi</option>
+          <option value="inactive">Non attivi</option>
+        </select>
+
+        <select
+          value={filterType}
+          onChange={e => setFilterType(e.target.value as "all" | "daily_menu" | "menu_card")}
+          className={selectCls}
+        >
+          <option value="all">Tutti i tipi</option>
+          <option value="daily_menu">Menu del giorno</option>
+          <option value="menu_card">Carta</option>
+        </select>
+      </div>
+
       <AdminTable
         columns={columns}
-        data={menus}
+        data={filteredMenus}
         onEdit={(m) => navigate(`/admin/menu-admin/${m.id}/edit`)}
         onDelete={handleDelete}
         onDetail={(m) => navigate(`/admin/menu-admin/${m.id}`)}

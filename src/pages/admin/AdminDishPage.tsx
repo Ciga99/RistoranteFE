@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { api } from "../../services/api";
 import type { DishType } from "../../types/menu";
 import { AdminTable } from "../../components/adminComponent/AdminTable";
 import { Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+const DISH_TYPES = ["antipasto", "primo", "secondo", "contorno", "dolce", "bevande"] as const;
+const selectCls = "border border-gray-300 rounded px-3 py-1.5 text-sm text-gray-700 bg-white";
 
 export default function AdminDishPage() {
   const navigate = useNavigate();
   const [dishes, setDishes] = useState<DishType[]>([]);
   const [loading, setLoading] = useState(true);
+  const [filterActive, setFilterActive] = useState<"all" | "active" | "inactive">("all");
+  const [filterType, setFilterType] = useState<"all" | DishType["type"]>("all");
 
   const fetchDishes = async () => {
     setLoading(true);
@@ -34,6 +38,12 @@ export default function AdminDishPage() {
       console.error("Errore nell'eliminare", err);
     }
   };
+
+  const filteredDishes = useMemo(() => {
+    return dishes
+      .filter(d => filterActive === "all" ? true : filterActive === "active" ? d.is_active : !d.is_active)
+      .filter(d => filterType === "all" ? true : d.type === filterType);
+  }, [dishes, filterActive, filterType]);
 
   const columns = [
     {
@@ -84,9 +94,32 @@ export default function AdminDishPage() {
         </button>
       </div>
 
+      <div className="flex gap-3 mb-4">
+        <select
+          value={filterActive}
+          onChange={e => setFilterActive(e.target.value as "all" | "active" | "inactive")}
+          className={selectCls}
+        >
+          <option value="all">Tutti gli stati</option>
+          <option value="active">Attivi</option>
+          <option value="inactive">Non attivi</option>
+        </select>
+
+        <select
+          value={filterType}
+          onChange={e => setFilterType(e.target.value as "all" | DishType["type"])}
+          className={selectCls}
+        >
+          <option value="all">Tutte le categorie</option>
+          {DISH_TYPES.map(t => (
+            <option key={t} value={t} className="capitalize">{t}</option>
+          ))}
+        </select>
+      </div>
+
       <AdminTable
         columns={columns}
-        data={dishes}
+        data={filteredDishes}
         onEdit={(d) => navigate(`/admin/dish-admin/${d.id}/edit`)}
         onDelete={handleDelete}
       />
