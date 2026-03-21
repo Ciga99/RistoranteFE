@@ -46,7 +46,7 @@ export default function AdminMenuDishFormPage() {
 
   return (
     <div className="p-6 max-w-xl">
-      <HeaderFrom title = "Aggiungi Piatto al Menu" navigateUrl="/admin/menu-admin/${menuId}"/>
+      <HeaderFrom title = "Modifica Menu" navigateUrl="/admin/menu-admin/${menuId}"/>
       <div className="bg-white rounded-lg shadow p-6 border border-gray-100 flex flex-col gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Nome</label>

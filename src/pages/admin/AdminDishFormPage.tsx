@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { api } from "../../services/api";
 import type { DishType } from "../../types/menu";
-import { ArrowLeft } from "lucide-react";
 import HeaderFrom from "../../components/adminComponent/HeaderForm";
 
 const DISH_TYPES = ["antipasto", "primo", "secondo", "contorno", "dolce", "bevande"] as const;
@@ -31,6 +30,7 @@ export default function AdminDishFormPage() {
     const fetchDish = async () => {
       try {
         const res = await api.get(`api/dishes/${id}/`);
+        console.log("res", res)
         const d = res.data;
         setForm({ name: d.name, type: d.type, description: d.description, price: d.price, is_active: d.is_active });
       } catch (err) {
@@ -69,7 +69,7 @@ export default function AdminDishFormPage() {
   if (loading) return <p className="p-8 text-center text-gray-500">Caricamento...</p>;
 
   return (
-    <div className="p-6 max-w-xl">
+    <div className="p-6">
       <HeaderFrom title = {isEdit ? "Modifica Piatto" : "Aggiungi Piatto"} navigateUrl="/admin/dish-admin"/>
       <div className="bg-white rounded-lg shadow p-6 border border-gray-100 flex flex-col gap-4">
         <div>

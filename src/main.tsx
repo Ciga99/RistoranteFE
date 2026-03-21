@@ -50,15 +50,16 @@ const router = createBrowserRouter([
           { path: 'menu-admin/:menuId/add-dish', element: <AdminMenuDishFormPage /> },
           { path: 'menu-admin/:id', element: <AdminMenuDetailPage /> },
           // Piatti
-          { path: 'dish-admin', element: <AdminDishPage /> },
-          { path: 'dish-admin/new', element: <AdminDishFormPage /> },
-          { path: 'dish-admin/:id/edit', element: <AdminDishFormPage /> },
-          // Stanze
-          { path: 'rooms-admin', element: <AdminRoomsPage /> },
-          // Calendario / Prenotazioni
-          { path: 'calendar-admin', element: <AdminCalendarPage /> },
-          { path: 'calendar-admin/new', element: <AdminBookingFormPage /> },
-          { path: 'calendar-admin/:id/edit', element: <AdminBookingFormPage /> },
+          { path: 'dish-admin', element: <AdminDishPage/> },
+          { path: 'dish-admin/new', element: <AdminDishFormPage/> },
+          { path: 'dish-admin/:id/edit', element: <AdminDishFormPage/> },
+          // // Stanze
+          // { path: 'rooms-admin', element: <AdminRoomsPage /> },
+          // // Calendario / Prenotazioni
+          // { path: 'calendar-admin', element: <AdminCalendarPage /> },
+          // { path: 'calendar-admin/new', element: <AdminBookingFormPage /> },
+          // { path: 'calendar-admin/:id/edit', element: <AdminBookingFormPage /> },
+          { path: '*', element: <Navigate to="/admin" replace /> },
         ],
       },
       { path: 'login', element: <Login /> },

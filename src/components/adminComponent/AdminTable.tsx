@@ -54,7 +54,7 @@ export function AdminTable<T extends { id: number }>({
                     </button>
                   )}
                   <button
-                    onClick={() => onEdit(row)}
+                    onClick={() => {onEdit(row);}}
                     title="Modifica"
                     className="text-amber-600 hover:text-amber-800"
                   >

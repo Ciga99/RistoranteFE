@@ -65,9 +65,8 @@ export default function AdminMenuFormPage() {
   }, [id, isEdit]);
 
   useEffect(() => {
-    if (!isEdit) return;
     api.get("api/dishes/").then(res => setAllDishes(res.data)).catch(console.error);
-  }, [isEdit]);
+  }, []);
 
   const fetchMenuDishes = async () => {
     const res = await api.get(`api/menu/${id}/`);
@@ -90,7 +89,17 @@ export default function AdminMenuFormPage() {
         navigate("/admin/menu-admin");
       } else {
         const res = await api.post("api/menu/", form);
-        navigate(`/admin/menu-admin/${res.data.id}/edit`);
+        const newId = res.data.id;
+        for (const dish of menuDishes) {
+          await api.post(`api/menu/${newId}/dishes/`, {
+            name: dish.name,
+            type: dish.type,
+            description: dish.description,
+            price: dish.price,
+            is_active: dish.is_active,
+          });
+        }
+        navigate("/admin/menu-admin");
       }
     } catch (err) {
       console.error("Errore nel salvare", err);
@@ -104,29 +113,39 @@ export default function AdminMenuFormPage() {
     const dish = allDishes.find(d => d.id === selectedDishId);
     if (!dish) return;
     setDishError(null);
-    try {
-      await api.post(`api/menu/${id}/dishes/`, {
-        name: dish.name,
-        type: dish.type,
-        description: dish.description,
-        price: dish.price,
-        is_active: dish.is_active,
-      });
-      await fetchMenuDishes();
-      setSelectedDishId(null);
-    } catch {
-      setDishError("Impossibile aggiungere il piatto. Riprova.");
+    if (isEdit) {
+      try {
+        await api.post(`api/menu/${id}/dishes/`, {
+          name: dish.name,
+          type: dish.type,
+          description: dish.description,
+          price: dish.price,
+          is_active: dish.is_active,
+        });
+        await fetchMenuDishes();
+        setSelectedDishId(null);
+      } catch {
+        setDishError("Impossibile aggiungere il piatto. Riprova.");
+      }
+    }else{
+      //Nuvo Creazione 
+      setMenuDishes(prev => [...prev, dish]);
+      setSelectedDishId(null)
     }
   };
 
   const handleRemoveDish = async (dish: DishType) => {
     if (!confirm(`Rimuovere "${dish.name}" dal menu?`)) return;
     setDishError(null);
-    try {
-      await api.delete(`api/menu/${id}/dishes/${dish.id}/`);
-      await fetchMenuDishes();
-    } catch {
-      setDishError("Impossibile rimuovere il piatto.");
+    if(isEdit){
+      try {
+        await api.delete(`api/menu/${id}/dishes/${dish.id}/`);
+        await fetchMenuDishes();
+      } catch {
+        setDishError("Impossibile rimuovere il piatto.");
+      }
+    }else{
+      setMenuDishes(prev =>  prev.filter(d => d.id !== dish.id));
     }
   };
 
@@ -188,12 +207,6 @@ export default function AdminMenuFormPage() {
         {/* Sezione piatti */}
         <div className="border-t border-gray-200 pt-4 mt-2">
           <h3 className="text-lg font-bold text-amber-700 mb-3">Piatti nel Menu</h3>
-
-          {!isEdit ? (
-            <div className="bg-gray-50 border border-dashed border-gray-300 rounded p-4 text-center text-gray-400 text-sm">
-              Salva il menu per poter aggiungere piatti.
-            </div>
-          ) : (
             <div className="flex flex-col gap-6">
               {/* Pannello 1 — selezione categoria + piatto */}
               <div className="bg-amber-50 border border-amber-100 rounded-lg p-4 flex flex-col gap-3">
@@ -281,7 +294,6 @@ export default function AdminMenuFormPage() {
                 )}
               </div>
             </div>
-          )}
         </div>
 
         <div className="flex gap-3 pt-2">
