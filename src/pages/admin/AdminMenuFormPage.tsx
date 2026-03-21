@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { api } from "../../services/api";
 import { Plus, Trash2 } from "lucide-react";
-import HeaderFrom from "../../components/adminComponent/HeaderForm";
+import AdminFormCard, { inputCls } from "../../components/adminComponent/AdminFormCard";
 import type { DishType } from "../../types/menu";
+import FormSelect from "../../components/adminComponent/FormSelect";
 
 const emptyForm = {
   type: "menu_card" as "menu_card" | "daily_menu",
@@ -12,8 +13,6 @@ const emptyForm = {
   day_of_week: "",
   is_active: true,
 };
-
-const inputCls = "w-full border border-gray-300 rounded px-3 py-2 text-gray-900";
 
 const DISH_CATEGORIES = ["antipasto", "primo", "secondo", "contorno", "dolce", "bevande"] as const;
 type DishCategory = typeof DISH_CATEGORIES[number];
@@ -161,157 +160,156 @@ export default function AdminMenuFormPage() {
   if (loading) return <p className="p-8 text-center text-gray-500">Caricamento...</p>;
 
   return (
-    <div className="p-6">
-      <HeaderFrom title={isEdit ? "Modifica Menu" : "Aggiungi Menu"} navigateUrl="/admin/menu-admin" />
-      <div className="bg-white rounded-lg shadow p-6 border border-gray-100 flex flex-col gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
-          <select name="type" value={form.type} onChange={handleChange} className={inputCls}>
-            <option value="menu_card">Carta</option>
-            <option value="daily_menu">Menu del giorno</option>
-          </select>
-        </div>
+    <AdminFormCard
+      title={isEdit ? "Modifica Menu" : "Aggiungi Menu"}
+      backUrl="/admin/menu-admin"
+      onSave={handleSave}
+      saving={saving}
+    >
+      <FormSelect
+        label="Tipo"
+        name="type"
+        value={form.type}
+        onChange={handleChange}
+        options={[
+          { value: "menu_card", label: "Carta" },
+          { value: "daily_menu", label: "Menu del giorno" },
+        ]}
+      />
+      <FormSelect
+        label="Giorno della settimana"
+        name="day_of_week"
+        value={form.day_of_week || ""}
+        onChange={handleChange}
+        placeholder="Seleziona un giorno..."
+        options={[
+          { value: "monday", label: "Lunedì" },
+          { value: "tuesday", label: "Martedì" },
+          { value: "wednesday", label: "Mercoledì" },
+          { value: "thursday", label: "Giovedì" },
+          { value: "friday", label: "Venerdì" },
+          { value: "saturday", label: "Sabato" },
+          { value: "sunday", label: "Domenica" },
+        ]}
+      />
+      {form.type === "daily_menu" && (
+        <>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Data</label>
+            <input type="date" name="date" value={form.date} onChange={handleChange} className={inputCls} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Giorno della settimana</label>
+            <select name="day_of_week" value={form.day_of_week || ""} onChange={handleChange} className={inputCls}>
+              <option value="">Seleziona un giorno...</option>
+              <option value="monday">Lunedì</option>
+              <option value="tuesday">Martedì</option>
+              <option value="wednesday">Mercoledì</option>
+              <option value="thursday">Giovedì</option>
+              <option value="friday">Venerdì</option>
+              <option value="saturday">Sabato</option>
+              <option value="sunday">Domenica</option>
+            </select>
+          </div>
+        </>
+      )}
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Note</label>
-          <textarea name="notes" value={form.notes} onChange={handleChange} className={inputCls} rows={3} />
-        </div>
+      <label className="flex items-center gap-2 cursor-pointer">
+        <input type="checkbox" name="is_active" checked={form.is_active} onChange={handleChange} />
+        <span className="text-sm text-gray-700">Attivo</span>
+      </label>
 
-        {form.type === "daily_menu" && (
-          <>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Data</label>
-              <input type="date" name="date" value={form.date} onChange={handleChange} className={inputCls} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Giorno della settimana</label>
-              <select name="day_of_week" value={form.day_of_week || ""} onChange={handleChange} className={inputCls}>
-                <option value="">Seleziona un giorno...</option>
-                <option value="monday">Lunedì</option>
-                <option value="tuesday">Martedì</option>
-                <option value="wednesday">Mercoledì</option>
-                <option value="thursday">Giovedì</option>
-                <option value="friday">Venerdì</option>
-                <option value="saturday">Sabato</option>
-                <option value="sunday">Domenica</option>
-              </select>
-            </div>
-          </>
-        )}
+      {/* Sezione piatti */}
+      <div className="border-t border-gray-200 pt-4 mt-2">
+        <h3 className="text-lg font-bold text-amber-700 mb-3">Piatti nel Menu</h3>
+          <div className="flex flex-col gap-6">
+            {/* Pannello 1 — selezione categoria + piatto */}
+            <div className="bg-amber-50 border border-amber-100 rounded-lg p-4 flex flex-col gap-3">
+              <p className="text-sm font-semibold text-amber-700">Aggiungi un piatto</p>
 
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input type="checkbox" name="is_active" checked={form.is_active} onChange={handleChange} />
-          <span className="text-sm text-gray-700">Attivo</span>
-        </label>
-
-        {/* Sezione piatti */}
-        <div className="border-t border-gray-200 pt-4 mt-2">
-          <h3 className="text-lg font-bold text-amber-700 mb-3">Piatti nel Menu</h3>
-            <div className="flex flex-col gap-6">
-              {/* Pannello 1 — selezione categoria + piatto */}
-              <div className="bg-amber-50 border border-amber-100 rounded-lg p-4 flex flex-col gap-3">
-                <p className="text-sm font-semibold text-amber-700">Aggiungi un piatto</p>
-
-                <div className="flex flex-wrap gap-2">
-                  {DISH_CATEGORIES.map(cat => (
-                    <button
-                      key={cat}
-                      type="button"
-                      onClick={() => { setSelectedCategory(cat); setSelectedDishId(null); }}
-                      className={`px-3 py-1 rounded-full text-xs font-semibold border transition-colors
-                        ${selectedCategory === cat
-                          ? "bg-amber-600 text-white border-amber-600"
-                          : "bg-white text-amber-700 border-amber-300 hover:bg-amber-100"}`}
-                    >
-                      {CATEGORY_LABELS[cat]}
-                    </button>
-                  ))}
-                </div>
-
-                <div className="flex gap-2 items-center">
-                  <select
-                    value={selectedDishId ?? ""}
-                    onChange={e => setSelectedDishId(Number(e.target.value) || null)}
-                    className="flex-1 border border-gray-300 rounded px-3 py-2 text-gray-900 text-sm"
-                  >
-                    <option value="">— Seleziona un piatto —</option>
-                    {availableForCategory.map(d => (
-                      <option key={d.id} value={d.id}>{d.name} — € {d.price}</option>
-                    ))}
-                  </select>
+              <div className="flex flex-wrap gap-2">
+                {DISH_CATEGORIES.map(cat => (
                   <button
+                    key={cat}
                     type="button"
-                    onClick={handleAddDish}
-                    disabled={!selectedDishId}
-                    className="flex items-center gap-1 px-3 py-2 bg-amber-600 text-white rounded text-sm hover:bg-amber-700 disabled:opacity-40"
+                    onClick={() => { setSelectedCategory(cat); setSelectedDishId(null); }}
+                    className={`px-3 py-1 rounded-full text-xs font-semibold border transition-colors
+                      ${selectedCategory === cat
+                        ? "bg-amber-600 text-white border-amber-600"
+                        : "bg-white text-amber-700 border-amber-300 hover:bg-amber-100"}`}
                   >
-                    <Plus size={14} /> Aggiungi
+                    {CATEGORY_LABELS[cat]}
                   </button>
-                </div>
-
-                {availableForCategory.length === 0 && (
-                  <p className="text-xs text-gray-400">Nessun piatto disponibile (o tutti già aggiunti).</p>
-                )}
-                {dishError && <p className="text-xs text-red-500">{dishError}</p>}
+                ))}
               </div>
 
-              {/* Pannello 2 — piatti nel menu raggruppati per categoria */}
-              <div className="flex flex-col gap-4">
-                {DISH_CATEGORIES.map(cat => {
-                  const dishes = dishesByCategory[cat];
-                  if (!dishes.length) return null;
-                  return (
-                    <div key={cat}>
-                      <h4 className="text-xs font-bold uppercase text-amber-600 tracking-wide mb-2">
-                        {CATEGORY_LABELS[cat]}
-                      </h4>
-                      <div className="flex flex-col gap-1">
-                        {dishes.map(dish => (
-                          <div
-                            key={dish.id}
-                            className="flex items-center justify-between bg-white border border-gray-100 rounded px-3 py-2"
-                          >
-                            <div className="flex flex-col">
-                              <span className="text-sm font-medium text-gray-800">{dish.name}</span>
-                              <span className="text-xs text-gray-400">€ {dish.price}</span>
-                            </div>
-                            <button
-                              type="button"
-                              onClick={() => handleRemoveDish(dish)}
-                              className="text-red-400 hover:text-red-600"
-                              title="Rimuovi dal menu"
-                            >
-                              <Trash2 size={14} />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
-                {menuDishes.length === 0 && (
-                  <p className="text-sm text-gray-400 italic">Nessun piatto aggiunto al menu.</p>
-                )}
+              <div className="flex gap-2 items-center">
+                <select
+                  value={selectedDishId ?? ""}
+                  onChange={e => setSelectedDishId(Number(e.target.value) || null)}
+                  className="flex-1 border border-gray-300 rounded px-3 py-2 text-gray-900 text-sm"
+                >
+                  <option value="">— Seleziona un piatto —</option>
+                  {availableForCategory.map(d => (
+                    <option key={d.id} value={d.id}>{d.name} — € {d.price}</option>
+                  ))}
+                </select>
+                <button
+                  type="button"
+                  onClick={handleAddDish}
+                  disabled={!selectedDishId}
+                  className="flex items-center gap-1 px-3 py-2 bg-amber-600 text-white rounded text-sm hover:bg-amber-700 disabled:opacity-40"
+                >
+                  <Plus size={14} /> Aggiungi
+                </button>
               </div>
+
+              {availableForCategory.length === 0 && (
+                <p className="text-xs text-gray-400">Nessun piatto disponibile (o tutti già aggiunti).</p>
+              )}
+              {dishError && <p className="text-xs text-red-500">{dishError}</p>}
             </div>
-        </div>
 
-        <div className="flex gap-3 pt-2">
-          <button
-            onClick={() => navigate("/admin/menu-admin")}
-            className="px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-50"
-          >
-            Annulla
-          </button>
-          <button
-            onClick={handleSave}
-            disabled={saving}
-            className="px-4 py-2 rounded bg-amber-600 text-white hover:bg-amber-700 disabled:opacity-50"
-          >
-            {saving ? "Salvataggio..." : "Salva"}
-          </button>
-        </div>
+            {/* Pannello 2 — piatti nel menu raggruppati per categoria */}
+            <div className="flex flex-col gap-4">
+              {DISH_CATEGORIES.map(cat => {
+                const dishes = dishesByCategory[cat];
+                if (!dishes.length) return null;
+                return (
+                  <div key={cat}>
+                    <h4 className="text-xs font-bold uppercase text-amber-600 tracking-wide mb-2">
+                      {CATEGORY_LABELS[cat]}
+                    </h4>
+                    <div className="flex flex-col gap-1">
+                      {dishes.map(dish => (
+                        <div
+                          key={dish.id}
+                          className="flex items-center justify-between bg-white border border-gray-100 rounded px-3 py-2"
+                        >
+                          <div className="flex flex-col">
+                            <span className="text-sm font-medium text-gray-800">{dish.name}</span>
+                            <span className="text-xs text-gray-400">€ {dish.price}</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveDish(dish)}
+                            className="text-red-400 hover:text-red-600"
+                            title="Rimuovi dal menu"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+              {menuDishes.length === 0 && (
+                <p className="text-sm text-gray-400 italic">Nessun piatto aggiunto al menu.</p>
+              )}
+            </div>
+          </div>
       </div>
-    </div>
+    </AdminFormCard>
   );
 }
