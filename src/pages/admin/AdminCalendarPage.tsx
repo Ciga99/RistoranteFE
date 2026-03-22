@@ -33,7 +33,7 @@ export default function AdminCalendarPage() {
     }
   };
 
-  if (loading) return <p className="p-8 text-center text-gray-500">Caricamento...</p>;
+  if (loading) return <Spinner />;
 
   return (
     <div className="p-6">

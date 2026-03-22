@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { api } from "../../services/api";
 import { ArrowLeft } from "lucide-react";
 import HeaderFrom from "../../components/adminComponent/HeaderForm";
+import Spinner from "../../components/Spinner";
 
 const emptyForm = { room: 0, guest_name: "", date_from: "", date_to: "", guests: 1 };
 
@@ -54,7 +55,7 @@ export default function AdminBookingFormPage() {
     }
   };
 
-  if (loading) return <p className="p-8 text-center text-gray-500">Caricamento...</p>;
+  if (loading) return <Spinner />;
 
   return (
     <div className="p-6 max-w-xl">

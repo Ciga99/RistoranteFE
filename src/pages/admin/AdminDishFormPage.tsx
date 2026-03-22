@@ -5,6 +5,7 @@ import type { DishType } from "../../types/menu";
 import AdminFormCard, { inputCls } from "../../components/adminComponent/AdminFormCard";
 import FormSelect from "../../components/adminComponent/FormSelect";
 import FormToggle from "../../components/adminComponent/FormToggle";
+import Spinner from "../../components/Spinner";
 
 const DISH_TYPES = ["antipasto", "primo", "secondo", "contorno", "dolce", "bevande"] as const;
 
@@ -66,7 +67,7 @@ export default function AdminDishFormPage() {
     }
   };
 
-  if (loading) return <p className="p-8 text-center text-gray-500">Caricamento...</p>;
+  if (loading) return <Spinner />;
 
   return (
     <AdminFormCard
@@ -75,6 +76,10 @@ export default function AdminDishFormPage() {
       onSave={handleSave}
       saving={saving}
     >
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Nome</label>
+        <input name="name" value={form.name} onChange={handleChange} className={inputCls} placeholder="Es. Tagliatelle al ragù" />
+      </div>
       <FormSelect 
         label="Tipo"
         name="type"
@@ -82,10 +87,6 @@ export default function AdminDishFormPage() {
         onChange={handleChange}
         options={DISH_TYPES.map(t => ({ value: t, label: t}))}
       />
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Nome</label>
-        <input name="name" value={form.name} onChange={handleChange} className={inputCls} placeholder="Es. Tagliatelle al ragù" />
-      </div>
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Descrizione</label>

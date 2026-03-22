@@ -4,6 +4,7 @@ import { Plus } from "lucide-react";
 import type { MenuType } from "../../types/menu";
 import { useNavigate } from "react-router-dom";
 import { AdminTable } from "../../components/adminComponent/AdminTable";
+import Spinner from "../../components/Spinner";
 
 const selectCls = "border border-gray-300 rounded px-3 py-1.5 text-sm text-gray-700 bg-white";
 
@@ -79,7 +80,7 @@ export default function AdminMenuPage() {
     },
   ];
 
-  if (loading) return <p className="p-8 text-center text-gray-500">Caricamento...</p>;
+  if (loading) return <Spinner />;
 
   return (
     <div className="p-6">

@@ -5,6 +5,7 @@ import { AdminTable } from "../../components/adminComponent/AdminTable";
 import FormToggle from "../../components/adminComponent/FormToggle";
 import { Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../../components/Spinner";
 
 const DISH_TYPES = ["antipasto", "primo", "secondo", "contorno", "dolce", "bevande"] as const;
 const selectCls = "border border-gray-300 rounded px-3 py-1.5 text-sm text-gray-700 bg-white";
@@ -91,7 +92,7 @@ export default function AdminDishPage() {
     },
   ];
 
-  if (loading) return <p className="p-8 text-center text-gray-500">Caricamento...</p>;
+  if (loading) return <Spinner />;
 
   return (
     <div className="p-6">

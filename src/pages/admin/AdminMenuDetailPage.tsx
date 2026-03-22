@@ -4,6 +4,7 @@ import { api } from "../../services/api";
 import type { MenuType, DishType } from "../../types/menu";
 import { AdminTable } from "../../components/adminComponent/AdminTable";
 import { ArrowLeft, Pencil, Plus } from "lucide-react";
+import Spinner from "../../components/Spinner";
 
 export default function AdminMenuDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -63,7 +64,7 @@ export default function AdminMenuDetailPage() {
     },
   ];
 
-  if (loading) return <p className="p-8 text-center text-gray-500">Caricamento...</p>;
+  if (loading) return <Spinner />;
   if (!menu) return <p className="p-8 text-center text-red-500">Menu non trovato</p>;
 
   return (

@@ -6,6 +6,7 @@ import AdminFormCard, { inputCls } from "../../components/adminComponent/AdminFo
 import type { DishType } from "../../types/menu";
 import FormSelect from "../../components/adminComponent/FormSelect";
 import FormToggle from "../../components/adminComponent/FormToggle";
+import Spinner from "../../components/Spinner";
 
 const emptyForm = {
   type: "menu_card" as "menu_card" | "daily_menu",
@@ -158,7 +159,7 @@ export default function AdminMenuFormPage() {
     d.type === selectedCategory && !menuDishes.some(m => m.name === d.name)
   );
 
-  if (loading) return <p className="p-8 text-center text-gray-500">Caricamento...</p>;
+  if (loading) return <Spinner />;
 
   return (
     <AdminFormCard
