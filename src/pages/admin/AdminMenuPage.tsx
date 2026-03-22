@@ -5,6 +5,7 @@ import type { MenuType } from "../../types/menu";
 import { useNavigate } from "react-router-dom";
 import { AdminTable } from "../../components/adminComponent/AdminTable";
 import Spinner from "../../components/Spinner";
+import FormToggle from "../../components/adminComponent/FormToggle";
 
 const selectCls = "border border-gray-300 rounded px-3 py-1.5 text-sm text-gray-700 bg-white";
 
@@ -45,6 +46,15 @@ export default function AdminMenuPage() {
     }
   };
 
+  const handleToggleActive = async (menu: MenuType) => {
+    try {
+      await api.patch(`api/menu/${menu.id}/`, { is_active: !menu.is_active });
+      fetchMenus();
+    } catch (err) {
+      console.error("Errore nel cambiare lo stato", err);
+    }
+  };
+
   const columns = [
     {
       header: "Tipo",
@@ -71,11 +81,12 @@ export default function AdminMenuPage() {
     {
       header: "Stato",
       render: (m: MenuType) => (
-        <span className={`text-xs px-2 py-0.5 rounded-full ${
-          m.is_active ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"
-        }`}>
-          {m.is_active ? "Attivo" : "Non attivo"}
-        </span>
+        <FormToggle
+          label=""
+          name="is_active"
+          checked={m.is_active}
+          onChange={() => handleToggleActive(m)}
+        />
       ),
     },
   ];

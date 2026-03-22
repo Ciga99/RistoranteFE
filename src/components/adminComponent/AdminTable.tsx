@@ -44,7 +44,7 @@ export function AdminTable<T extends { id: number }>({
               ))}
               <td className="px-4 py-3">
                 <div className="flex gap-3 items-center">
-                  {onDetail && (
+                  {/* {onDetail && (
                     <button
                       onClick={() => onDetail(row)}
                       title="Dettaglio"
@@ -52,7 +52,7 @@ export function AdminTable<T extends { id: number }>({
                     >
                       <Eye size={15} />
                     </button>
-                  )}
+                  )} */}
                   <button
                     onClick={() => {onEdit(row);}}
                     title="Modifica"
