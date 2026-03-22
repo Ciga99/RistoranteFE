@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { api } from "../../services/api";
 import type { DishType } from "../../types/menu";
 import { AdminTable } from "../../components/adminComponent/AdminTable";
+import FormToggle from "../../components/adminComponent/FormToggle";
 import { Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -39,6 +40,15 @@ export default function AdminDishPage() {
     }
   };
 
+  const handleToggleActive = async (dish: DishType) => {
+    try {
+      await api.patch(`api/dishes/${dish.id}/`, { is_active: !dish.is_active });
+      fetchDishes();
+    } catch (err) {
+      console.error("Errore nel cambiare lo stato", err);
+    }
+  };
+
   const filteredDishes = useMemo(() => {
     return dishes
       .filter(d => filterActive === "all" ? true : filterActive === "active" ? d.is_active : !d.is_active)
@@ -71,11 +81,12 @@ export default function AdminDishPage() {
     {
       header: "Stato",
       render: (d: DishType) => (
-        <span className={`text-xs px-2 py-0.5 rounded-full ${
-          d.is_active ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"
-        }`}>
-          {d.is_active ? "Attivo" : "Non attivo"}
-        </span>
+        <FormToggle
+          label=""
+          name="is_active"
+          checked={d.is_active}
+          onChange={() => handleToggleActive(d)}
+        />
       ),
     },
   ];
