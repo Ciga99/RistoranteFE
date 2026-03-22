@@ -5,6 +5,7 @@ import { Plus, Trash2 } from "lucide-react";
 import AdminFormCard, { inputCls } from "../../components/adminComponent/AdminFormCard";
 import type { DishType } from "../../types/menu";
 import FormSelect from "../../components/adminComponent/FormSelect";
+import FormToggle from "../../components/adminComponent/FormToggle";
 
 const emptyForm = {
   type: "menu_card" as "menu_card" | "daily_menu",
@@ -214,10 +215,7 @@ export default function AdminMenuFormPage() {
         </>
       )}
 
-      <label className="flex items-center gap-2 cursor-pointer">
-        <input type="checkbox" name="is_active" checked={form.is_active} onChange={handleChange} />
-        <span className="text-sm text-gray-700">Attivo</span>
-      </label>
+      <FormToggle label="Attivo" name="is_active" checked={form.is_active} onChange={handleChange} />
 
       {/* Sezione piatti */}
       <div className="border-t border-gray-200 pt-4 mt-2">

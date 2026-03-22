@@ -4,6 +4,7 @@ import { api } from "../../services/api";
 import type { DishType } from "../../types/menu";
 import AdminFormCard, { inputCls } from "../../components/adminComponent/AdminFormCard";
 import FormSelect from "../../components/adminComponent/FormSelect";
+import FormToggle from "../../components/adminComponent/FormToggle";
 
 const DISH_TYPES = ["antipasto", "primo", "secondo", "contorno", "dolce", "bevande"] as const;
 
@@ -75,7 +76,7 @@ export default function AdminDishFormPage() {
       saving={saving}
     >
       <FormSelect 
-        label="tipo"
+        label="Tipo"
         name="type"
         value={form.type}
         onChange={handleChange}
@@ -84,13 +85,6 @@ export default function AdminDishFormPage() {
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Nome</label>
         <input name="name" value={form.name} onChange={handleChange} className={inputCls} placeholder="Es. Tagliatelle al ragù" />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
-        <select name="type" value={form.type} onChange={handleChange} className={inputCls}>
-          {DISH_TYPES.map(t => <option key={t} value={t} className="capitalize">{t}</option>)}
-        </select>
       </div>
 
       <div>
@@ -103,10 +97,7 @@ export default function AdminDishFormPage() {
         <input name="price" value={form.price} onChange={handleChange} className={inputCls} placeholder="Es. 12.50" />
       </div>
 
-      <label className="flex items-center gap-2 cursor-pointer">
-        <input type="checkbox" name="is_active" checked={form.is_active} onChange={handleChange} />
-        <span className="text-sm text-gray-700">Attivo</span>
-      </label>
+      <FormToggle label="Attivo" name="is_active" checked={form.is_active} onChange={handleChange} />
     </AdminFormCard>
   );
 }
