@@ -8,6 +8,13 @@ import FormSelect from "../../components/adminComponent/FormSelect";
 import FormToggle from "../../components/adminComponent/FormToggle";
 import Spinner from "../../components/Spinner";
 
+const DAY_STR_TO_NUM: Record<string, number> = {
+  monday: 0, tuesday: 1, wednesday: 2, thursday: 3, friday: 4, saturday: 5, sunday: 6,
+};
+const DAY_NUM_TO_STR: Record<number, string> = {
+  0: "monday", 1: "tuesday", 2: "wednesday", 3: "thursday", 4: "friday", 5: "saturday", 6: "sunday",
+};
+
 const emptyForm = {
   type: "menu_card" as "menu_card" | "daily_menu",
   notes: "",
@@ -18,6 +25,7 @@ const emptyForm = {
 
 const DISH_CATEGORIES = ["antipasto", "primo", "secondo", "contorno", "dolce", "bevande"] as const;
 type DishCategory = typeof DISH_CATEGORIES[number];
+type DishCategoryOrAll = DishCategory | "all";
 const CATEGORY_LABELS: Record<DishCategory, string> = {
   antipasto: "Antipasto",
   primo: "Primo",
@@ -38,9 +46,8 @@ export default function AdminMenuFormPage() {
 
   const [allDishes, setAllDishes] = useState<DishType[]>([]);
   const [menuDishes, setMenuDishes] = useState<DishType[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<DishCategory>("primo");
-  const [selectedDishId, setSelectedDishId] = useState<number | null>(null);
-  const [dishError, setDishError] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<DishCategoryOrAll>("primo");
+  const [selectedDishIds, setSelectedDishIds] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     if (!isEdit) return;
@@ -52,7 +59,7 @@ export default function AdminMenuFormPage() {
           type: m.type,
           notes: m.notes ?? "",
           date: m.date ?? "",
-          day_of_week: m.day_of_week?.toString() ?? "",
+          day_of_week: m.day_of_week != null ? (DAY_NUM_TO_STR[m.day_of_week] ?? "") : "",
           is_active: m.is_active,
         });
         setMenuDishes(m.dishes ?? []);
@@ -69,11 +76,6 @@ export default function AdminMenuFormPage() {
     api.get("api/dishes/").then(res => setAllDishes(res.data)).catch(console.error);
   }, []);
 
-  const fetchMenuDishes = async () => {
-    const res = await api.get(`api/menu/${id}/`);
-    setMenuDishes(res.data.dishes ?? []);
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
     setForm(prev => ({
@@ -85,23 +87,18 @@ export default function AdminMenuFormPage() {
   const handleSave = async () => {
     setSaving(true);
     try {
+      const payload = {
+        ...form,
+        date: form.date || null,
+        day_of_week: form.day_of_week ? DAY_STR_TO_NUM[form.day_of_week] ?? null : null,
+        dish_ids: menuDishes.map(d => d.id),
+      };
       if (isEdit) {
-        await api.put(`api/menu/${id}/`, form);
-        navigate("/admin/menu-admin");
+        await api.put(`api/menu/${id}/`, payload);
       } else {
-        const res = await api.post("api/menu/", form);
-        const newId = res.data.id;
-        for (const dish of menuDishes) {
-          await api.post(`api/menu/${newId}/dishes/`, {
-            name: dish.name,
-            type: dish.type,
-            description: dish.description,
-            price: dish.price,
-            is_active: dish.is_active,
-          });
-        }
-        navigate("/admin/menu-admin");
+        await api.post("api/menu/", payload);
       }
+      navigate("/admin/menu-admin");
     } catch (err) {
       console.error("Errore nel salvare", err);
     } finally {
@@ -109,45 +106,16 @@ export default function AdminMenuFormPage() {
     }
   };
 
-  const handleAddDish = async () => {
-    if (!selectedDishId) return;
-    const dish = allDishes.find(d => d.id === selectedDishId);
-    if (!dish) return;
-    setDishError(null);
-    if (isEdit) {
-      try {
-        await api.post(`api/menu/${id}/dishes/`, {
-          name: dish.name,
-          type: dish.type,
-          description: dish.description,
-          price: dish.price,
-          is_active: dish.is_active,
-        });
-        await fetchMenuDishes();
-        setSelectedDishId(null);
-      } catch {
-        setDishError("Impossibile aggiungere il piatto. Riprova.");
-      }
-    }else{
-      //Nuvo Creazione 
-      setMenuDishes(prev => [...prev, dish]);
-      setSelectedDishId(null)
-    }
+  const handleAddDish = () => {
+    if (selectedDishIds.size === 0) return;
+    const dishes = allDishes.filter(d => selectedDishIds.has(d.id));
+    setMenuDishes(prev => [...prev, ...dishes.filter(d => !prev.some(p => p.id === d.id))]);
+    setSelectedDishIds(new Set());
   };
 
-  const handleRemoveDish = async (dish: DishType) => {
+  const handleRemoveDish = (dish: DishType) => {
     if (!confirm(`Rimuovere "${dish.name}" dal menu?`)) return;
-    setDishError(null);
-    if(isEdit){
-      try {
-        await api.delete(`api/menu/${id}/dishes/${dish.id}/`);
-        await fetchMenuDishes();
-      } catch {
-        setDishError("Impossibile rimuovere il piatto.");
-      }
-    }else{
-      setMenuDishes(prev =>  prev.filter(d => d.id !== dish.id));
-    }
+    setMenuDishes(prev => prev.filter(d => d.id !== dish.id));
   };
 
   const dishesByCategory = DISH_CATEGORIES.reduce((acc, cat) => {
@@ -156,7 +124,8 @@ export default function AdminMenuFormPage() {
   }, {} as Record<DishCategory, DishType[]>);
 
   const availableForCategory = allDishes.filter(d =>
-    d.type === selectedCategory && !menuDishes.some(m => m.name === d.name)
+    (selectedCategory === "all" || d.type === selectedCategory) &&
+    !menuDishes.some(m => m.id === d.id)
   );
 
   if (loading) return <Spinner />;
@@ -176,22 +145,6 @@ export default function AdminMenuFormPage() {
         options={[
           { value: "menu_card", label: "Carta" },
           { value: "daily_menu", label: "Menu del giorno" },
-        ]}
-      />
-      <FormSelect
-        label="Giorno della settimana"
-        name="day_of_week"
-        value={form.day_of_week || ""}
-        onChange={handleChange}
-        placeholder="Seleziona un giorno..."
-        options={[
-          { value: "monday", label: "Lunedì" },
-          { value: "tuesday", label: "Martedì" },
-          { value: "wednesday", label: "Mercoledì" },
-          { value: "thursday", label: "Giovedì" },
-          { value: "friday", label: "Venerdì" },
-          { value: "saturday", label: "Sabato" },
-          { value: "sunday", label: "Domenica" },
         ]}
       />
       {form.type === "daily_menu" && (
@@ -227,11 +180,22 @@ export default function AdminMenuFormPage() {
               <p className="text-sm font-semibold text-amber-700">Aggiungi un piatto</p>
 
               <div className="flex flex-wrap gap-2">
+                <button
+                  key="all"
+                  type="button"
+                  onClick={() => { setSelectedCategory("all"); setSelectedDishIds(new Set()); }}
+                  className={`px-3 py-1 rounded-full text-xs font-semibold border transition-colors
+                    ${selectedCategory === "all"
+                      ? "bg-amber-600 text-white border-amber-600"
+                      : "bg-white text-amber-700 border-amber-300 hover:bg-amber-100"}`}
+                >
+                  Tutte
+                </button>
                 {DISH_CATEGORIES.map(cat => (
                   <button
                     key={cat}
                     type="button"
-                    onClick={() => { setSelectedCategory(cat); setSelectedDishId(null); }}
+                    onClick={() => { setSelectedCategory(cat); setSelectedDishIds(new Set()); }}
                     className={`px-3 py-1 rounded-full text-xs font-semibold border transition-colors
                       ${selectedCategory === cat
                         ? "bg-amber-600 text-white border-amber-600"
@@ -242,31 +206,42 @@ export default function AdminMenuFormPage() {
                 ))}
               </div>
 
-              <div className="flex gap-2 items-center">
-                <select
-                  value={selectedDishId ?? ""}
-                  onChange={e => setSelectedDishId(Number(e.target.value) || null)}
-                  className="flex-1 border border-gray-300 rounded px-3 py-2 text-gray-900 text-sm"
-                >
-                  <option value="">— Seleziona un piatto —</option>
+              {availableForCategory.length > 0 ? (
+                <div className="flex flex-col gap-1 max-h-48 overflow-y-auto border border-gray-200 rounded p-2 bg-white">
                   {availableForCategory.map(d => (
-                    <option key={d.id} value={d.id}>{d.name} — € {d.price}</option>
+                    <label key={d.id} className="flex items-center gap-2 text-sm cursor-pointer hover:bg-amber-50 px-1 py-0.5 rounded">
+                      <input
+                        type="checkbox"
+                        checked={selectedDishIds.has(d.id)}
+                        onChange={e => {
+                          setSelectedDishIds(prev => {
+                            const next = new Set(prev);
+                            e.target.checked ? next.add(d.id) : next.delete(d.id);
+                            return next;
+                          });
+                        }}
+                        className="accent-amber-600"
+                      />
+                      <span className="flex-1 text-black">{d.name}</span>
+                      <span className="text-gray-400 text-xs">€ {d.price}</span>
+                    </label>
                   ))}
-                </select>
+                </div>
+              ) : (
+                <p className="text-xs text-gray-400">Nessun piatto disponibile (o tutti già aggiunti).</p>
+              )}
+
+              <div className="flex justify-end">
                 <button
                   type="button"
                   onClick={handleAddDish}
-                  disabled={!selectedDishId}
+                  disabled={selectedDishIds.size === 0}
                   className="flex items-center gap-1 px-3 py-2 bg-amber-600 text-white rounded text-sm hover:bg-amber-700 disabled:opacity-40"
                 >
-                  <Plus size={14} /> Aggiungi
+                  <Plus size={14} /> Aggiungi{selectedDishIds.size > 0 ? ` (${selectedDishIds.size})` : ""}
                 </button>
               </div>
 
-              {availableForCategory.length === 0 && (
-                <p className="text-xs text-gray-400">Nessun piatto disponibile (o tutti già aggiunti).</p>
-              )}
-              {dishError && <p className="text-xs text-red-500">{dishError}</p>}
             </div>
 
             {/* Pannello 2 — piatti nel menu raggruppati per categoria */}
