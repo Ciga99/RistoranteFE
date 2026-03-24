@@ -16,8 +16,7 @@ import AdminMenuDishFormPage from './pages/admin/AdminMenuDishFormPage.tsx'
 import AdminDishPage from './pages/admin/AdminDishPage.tsx'
 import AdminDishFormPage from './pages/admin/AdminDishFormPage.tsx'
 import AdminRoomsPage from './pages/admin/AdminRoomsPage.tsx'
-import AdminCalendarPage from './pages/admin/AdminCalendarPage.tsx'
-import AdminBookingFormPage from './pages/admin/AdminBookingFormPage.tsx'
+import AdminRoomsFormPage from './pages/admin/AdminRoomsFormPage.tsx'
 import AdminMenuDetailPage from './pages/admin/AdminMenuDetailPage.tsx'
 
 const router = createBrowserRouter([
@@ -53,8 +52,10 @@ const router = createBrowserRouter([
           { path: 'dish-admin', element: <AdminDishPage/> },
           { path: 'dish-admin/new', element: <AdminDishFormPage/> },
           { path: 'dish-admin/:id/edit', element: <AdminDishFormPage/> },
-          // // Stanze
-          // { path: 'rooms-admin', element: <AdminRoomsPage /> },
+          // Stanze
+          { path: 'rooms-admin', element: <AdminRoomsPage /> },
+          { path: 'rooms-admin/new', element: <AdminRoomsFormPage /> },
+          { path: 'rooms-admin/:id/edit', element: <AdminRoomsFormPage /> },
           // // Calendario / Prenotazioni
           // { path: 'calendar-admin', element: <AdminCalendarPage /> },
           // { path: 'calendar-admin/new', element: <AdminBookingFormPage /> },
