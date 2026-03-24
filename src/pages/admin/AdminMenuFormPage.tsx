@@ -73,7 +73,7 @@ export default function AdminMenuFormPage() {
   }, [id, isEdit]);
 
   useEffect(() => {
-    api.get("api/dishes/").then(res => setAllDishes(res.data)).catch(console.error);
+    api.get("api/dishes/?active=true").then(res => setAllDishes(res.data)).catch(console.error);
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
