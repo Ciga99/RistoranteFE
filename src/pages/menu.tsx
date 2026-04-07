@@ -13,7 +13,7 @@ export default function Menu() {
     const [searchParams]  = useSearchParams();
     const [showCardMenu, setShowCardMenu] = useState(searchParams.get("tipo")!=="giorno");
     useEffect(() => {
-        api.get("api/menu").then((res : any) => setMenu(res.data))
+        api.get("api/menu-card/").then((res : any) => setMenu(Array.isArray(res.data) ? res.data : [res.data]))
         api.get("api/daily-menu/").then((res: any) => setDailyMenu(Array.isArray(res.data) ? res.data : [res.data]))
     }, [])
     return (
