@@ -33,7 +33,7 @@ function NavBar({title="La Mia Romagna", navLinks, sideNavOnly = false}: NavBarP
             {/* Sidebar */}
             <div className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 flex flex-col transform transition-transform duration-300 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
                 <div className="flex justify-between items-center p-4 border-b">
-                    <span className="font-bold  tracking-wide text-amber-700" style={{ fontFamily: "'Playfair Display', serif" }}>{title} </span>
+                    <span className="text-base font-bold tracking-wide text-amber-700" style={{ fontFamily: "'Playfair Display', serif" }}>{title} </span>
                     <X className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={close} aria-label="Chiudi menu" />
                 </div>
                 <NavLinks
@@ -43,13 +43,13 @@ function NavBar({title="La Mia Romagna", navLinks, sideNavOnly = false}: NavBarP
                     onClose={close}
                 />
             </div>
-            <h1
-                className="text-2xl font-bold  tracking-wide text-amber-700 cursor-pointer flex-1 ml-4 md:ml-0"
+            <p
+                className="text-2xl font-bold tracking-wide text-amber-700 cursor-pointer flex-1 ml-4 md:ml-0"
                 style={{ fontFamily: "'Playfair Display', serif" }}
                 onClick={() => { sideNavOnly ? navigate("/admin") : navigate("/")}}
                 >
-                {title}
-            </h1>
+                {title} 
+            </p>
             {!sideNavOnly && (
                 <NavLinks  links = {navLinks} className="text-gray-800 hidden md:flex gap-6 text" classLink="relative pb-1 border-b-2 border-transparent hover:border-amber-500 text-gray-800 hover:text-gray-900 font-medium transition-colors" />
             )}
