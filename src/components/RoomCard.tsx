@@ -32,7 +32,7 @@ export default function RoomCard({room}: {room: RoomType}) {
                 </div>
                 <div className="flex flex-col gap-2">
                     <h2 className="text-2xl font-bold text-gray-700">{room.name}</h2>
-                    <p className="text-gray-500 text-sm">Posti: {room.beds} &nbsp;·&nbsp; {room.priceNight}€ / notte</p>
+                    <p className="text-gray-500 text-sm">Posti: {room.capacity} &nbsp;·&nbsp; {room.price_per_night}€ / notte</p>
                     <p className="text-gray-600">{room.description}</p>
                 </div>
             </div>

@@ -58,12 +58,11 @@ export default function RoomDetail() {
             {/* Back button */}
             <button
                 onClick={() => navigate("/rooms")}
-                className="flex items-center gap-1 text-gray-600 hover:text-gray-900 mb-6 transition-colors"
+                className="flex items-center gap-1 hover:text-gray-900 mb-6 transition-colors bg-white/80"
             >
                 <ArrowLeft size={18} />
                 <span className="text-sm">Torna alle stanze</span>
             </button>
-
             {/* Photo carousel */}
             <div className="relative rounded-xl overflow-hidden bg-gray-100 mb-6">
                 {room.images.length > 0 ? (
@@ -87,16 +86,6 @@ export default function RoomDetail() {
                                 >
                                     <ChevronRight size={20} />
                                 </button>
-                                {/* Dots */}
-                                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-                                    {room.images.map((_, i) => (
-                                        <button
-                                            key={i}
-                                            onClick={() => setCurrentIndex(i)}
-                                            className={`w-2 h-2 rounded-full transition-colors ${i === currentIndex ? "bg-white" : "bg-white/50"}`}
-                                        />
-                                    ))}
-                                </div>
                             </>
                         )}
                     </>
