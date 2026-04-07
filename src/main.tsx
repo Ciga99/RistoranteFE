@@ -44,6 +44,7 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
         children: [
+          { index: true, element: <Navigate to="menu-admin" replace /> },
           // Menu
           { path: 'menu-admin', element: <AdminMenuPage /> },
           { path: 'menu-admin/new', element: <AdminMenuFormPage /> },
