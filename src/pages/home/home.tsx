@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Hero from "../../components/Hero"
 import { useNavigate } from "react-router";
 
@@ -6,13 +7,14 @@ function HomePage() {
   const mapUrl = "https://maps.google.com/maps?q=45.8134318,12.3525864&z=18&output=embed";
   // Questo è un URL di esempio generico per incorporare mappe tramite iframe
   const navigate = useNavigate();
+  const [bouncingCard, setBouncingCard] = useState<string | null>(null);
 
   return (
     <div className="flex flex-col">
 
       {/* Hero */}
-      <Hero inputH={100} srcImg="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-        altIMg="La Mia Romagna" title="La Mia Romagna"   
+      <Hero inputH={100} srcImg="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        altIMg="La Mia Romagna" title="La Mia Romagna"
         description="Un ristorante nel cuore della campagna trevigiana, per ogni tua occasione: ricevimenti, battesimi, comunioni, cresime, feste di laurea, pranzi di lavoro o cene intime." />
         {/* Chi siamo */}
       <section className="py-16 px-6 bg-white text-center">
@@ -32,13 +34,13 @@ function HomePage() {
           <h2 className="text-3xl font-bold text-gray-800 text-center mb-8">Orari di apertura</h2>
           <div className="bg-white rounded-2xl shadow-md overflow-hidden">
             {[
-              { giorno: "Lunedì",    orario: "12:00 – 23:00" },
-              { giorno: "Martedì",   orario: "12:00 – 23:00" },
-              { giorno: "Mercoledì", orario: "12:00 – 23:00" },
-              { giorno: "Giovedì",   orario: "12:00 – 23:00" },
-              { giorno: "Venerdì",   orario: "12:00 – 23:00" },
-              { giorno: "Sabato",    orario: "12:00 – 23:00" },
-              { giorno: "Domenica",  orario: "12:00 – 23:00" },
+              { giorno: "Lunedì",    orario: "CHIUSO" },
+              { giorno: "Martedì",   orario: "CHIUSO" },
+              { giorno: "Mercoledì", orario: "11:00 – 15:00 / 17:00 – 23:00" },
+              { giorno: "Giovedì",   orario: "11:00 – 15:00 / 17:00 – 23:00" },
+              { giorno: "Venerdì",   orario: "11:00 – 15:00 / 17:00 – 23:00" },
+              { giorno: "Sabato",    orario: "11:00 – 15:00 / 17:00 – 23:00" },
+              { giorno: "Domenica",  orario: "11:00 – 15:00 / 17:00 – 23:00" },
             ].map(({ giorno, orario }, i) => (
               <div
                 key={giorno}
@@ -62,7 +64,13 @@ function HomePage() {
               { titolo: "Menu del Giorno",   desc: "Piatti freschi preparati ogni giorno con ingredienti di stagione.", tipo:"giorno" },
               { titolo: "Menu alla Carta",   desc: "Scegli liberamente tra i nostri classici della tradizione romagnola.", tipo:"carta"},
             ].map(({ titolo, desc, tipo }) => (
-              <div  onClick={() => navigate(`/menu/${tipo}`)} key={titolo} className="bg-gray-50 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div
+                onClick={() => navigate(`/menu/${tipo}`)}
+                key={titolo}
+                onMouseEnter={() => setBouncingCard(titolo)}
+                onAnimationEnd={() => setBouncingCard(null)}
+                className={`bg-gray-50 rounded-2xl p-6 shadow-sm cursor-pointer ${bouncingCard === titolo ? "animate-bounce-top" : ""}`}
+              >
                 <h3 className="text-xl font-bold text-gray-800 mb-2">{titolo}</h3>
                 <p className="text-gray-600">{desc}</p>
               </div>
@@ -105,11 +113,11 @@ function HomePage() {
           />
         </div>
         <div className="mt-4 text-center">
-          <p className="font-semibold">La La Mia Romagna</p>
+          <p className="font-semibold">La Mia Romagna</p>
           <p className="text-gray-600">{address}</p>
-          <a 
-            href="https://www.google.com/maps/place/La+Mia+Romagna/@45.8134967,12.3523602,233m/data=!3m1!1e3!4m6!3m5!1s0x47794194cc5e4af3:0x159b59b8c7b07cbc!8m2!3d45.8134318!4d12.3525864!16s%2Fg%2F11x6dk5vmt?entry=ttu&g_ep=EgoyMDI2MDIyMy4wIKXMDSoASAFQAw%3D%3D" 
-            target="_blank" 
+          <a
+            href="https://www.google.com/maps/place/La+Mia+Romagna/@45.8134967,12.3523602,233m/data=!3m1!1e3!4m6!3m5!1s0x47794194cc5e4af3:0x159b59b8c7b07cbc!8m2!3d45.8134318!4d12.3525864!16s%2Fg%2F11x6dk5vmt?entry=ttu&g_ep=EgoyMDI2MDIyMy4wIKXMDSoASAFQAw%3D%3D"
+            target="_blank"
             className="text-blue-600 hover:underline mt-2 inline-block"
           >
             Apri in Google Maps
@@ -119,9 +127,9 @@ function HomePage() {
 
       {/* Footer */}
     <footer className="bg-gray-900 text-gray-400 text-center py-6 text-sm flex flex-col md:flex-row md:justify-between md:items-center md:px-8">
-          <p className="font-semibold ">La La Mia Romagna</p>
+          <p className="font-semibold ">La Mia Romagna</p>
           <p className="font-semibold ">Telefono: +39 350 585 0022</p>
-          <p className="font-semibold ">E-mail: </p>
+          <p className="font-semibold ">E-mail: lamiaromagna2025@gmail.com </p>
       <div>© {new Date().getFullYear()} La Mia Romagna — Tutti i diritti riservati</div>
     </footer>
     </div>
