@@ -18,6 +18,7 @@ import AdminDishFormPage from './pages/admin/AdminDishFormPage.tsx'
 import AdminRoomsPage from './pages/admin/AdminRoomsPage.tsx'
 import AdminRoomsFormPage from './pages/admin/AdminRoomsFormPage.tsx'
 import AdminMenuDetailPage from './pages/admin/AdminMenuDetailPage.tsx'
+import RoomDetail from './pages/RoomDetail.tsx'
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
           { path: 'menu', element: <Menu /> },
           { path: 'menu/:tipo', element: <Menu /> },
           { path: 'rooms', element: <Rooms /> },
+          { path: 'rooms/:id', element: <RoomDetail /> },
         ],
       },
       {
@@ -60,7 +62,7 @@ const router = createBrowserRouter([
           // { path: 'calendar-admin', element: <AdminCalendarPage /> },
           // { path: 'calendar-admin/new', element: <AdminBookingFormPage /> },
           // { path: 'calendar-admin/:id/edit', element: <AdminBookingFormPage /> },
-          { path: '*', element: <Navigate to="/admin" replace /> },
+          { path: '*', element: <Navigate to="/menu-admin" replace /> },
         ],
       },
       { path: 'login', element: <Login /> },

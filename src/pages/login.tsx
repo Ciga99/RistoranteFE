@@ -27,14 +27,14 @@ export default function Login() {
         <div className="relative min-h-screen w-full flex items-center justify-center">
             <img
                 src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=2070&auto=format&fit=crop"
-                alt="Mia Romagna"
+                alt="La Mia Romagna"
                 className="absolute inset-0 w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-black/50" />
             <div className="relative z-10 bg-white rounded-lg shadow-md p-8 w-full max-w-sm mx-4">
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-bold text-amber-700" style={{ fontFamily: "'Playfair Display', serif" }}>
-                        Mia Romagna
+                        La Mia Romagna
                     </h1>
                     <p className="text-gray-500 mt-1 text-sm">Area Gestione</p>
                 </div>

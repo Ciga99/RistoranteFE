@@ -12,7 +12,7 @@ function HomePage() {
 
       {/* Hero */}
       <Hero inputH={100} srcImg="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-        altIMg="Mia Romagna" title="Mia Romagna"   
+        altIMg="La Mia Romagna" title="La Mia Romagna"   
         description="Un ristorante nel cuore della campagna trevigiana, per ogni tua occasione: ricevimenti, battesimi, comunioni, cresime, feste di laurea, pranzi di lavoro o cene intime." />
         {/* Chi siamo */}
       <section className="py-16 px-6 bg-white text-center">
@@ -76,7 +76,7 @@ function HomePage() {
           <img
             className="absolute inset-0 w-full h-full object-cover"
             src="https://plus.unsplash.com/premium_photo-1675615667752-2ccda7042e7e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&https://plus.unsplash.com/premium_photo-1675615667752-2ccda7042e7e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D://images.unsplash.com/photo-1690983322857-0811d47fedfc?q=80&w=2102&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-             alt="Soggiorno Mia Romagna"/>
+             alt="Soggiorno La Mia Romagna"/>
           <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center px-6 text-center">
             <h2 className="text-3xl font-bold text-white mb-4">Soggiorna da noi</h2>
             <p className="text-white/80 text-lg mb-6">
@@ -105,7 +105,7 @@ function HomePage() {
           />
         </div>
         <div className="mt-4 text-center">
-          <p className="font-semibold">La Mia Romagna</p>
+          <p className="font-semibold">La La Mia Romagna</p>
           <p className="text-gray-600">{address}</p>
           <a 
             href="https://www.google.com/maps/place/La+Mia+Romagna/@45.8134967,12.3523602,233m/data=!3m1!1e3!4m6!3m5!1s0x47794194cc5e4af3:0x159b59b8c7b07cbc!8m2!3d45.8134318!4d12.3525864!16s%2Fg%2F11x6dk5vmt?entry=ttu&g_ep=EgoyMDI2MDIyMy4wIKXMDSoASAFQAw%3D%3D" 
@@ -119,10 +119,10 @@ function HomePage() {
 
       {/* Footer */}
     <footer className="bg-gray-900 text-gray-400 text-center py-6 text-sm flex flex-col md:flex-row md:justify-between md:items-center md:px-8">
-          <p className="font-semibold ">La Mia Romagna</p>
+          <p className="font-semibold ">La La Mia Romagna</p>
           <p className="font-semibold ">Telefono: +39 350 585 0022</p>
           <p className="font-semibold ">E-mail: </p>
-      <div>© {new Date().getFullYear()} Mia Romagna — Tutti i diritti riservati</div>
+      <div>© {new Date().getFullYear()} La Mia Romagna — Tutti i diritti riservati</div>
     </footer>
     </div>
   );

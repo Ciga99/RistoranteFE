@@ -4,12 +4,12 @@ import NavLinks from "./NavLInks";
 import { useNavigate } from "react-router";
 
 interface NavBarProps {
-  title?: string;                          // default: "Mia Romagna"
+  title?: string;                          // default: "La Mia Romagna"
   navLinks?: { name: string; path: string }[];  // passati a NavLinks
   sideNavOnly?: boolean;                   // default: false
 }
 
-function NavBar({title="mia Romagna", navLinks, sideNavOnly = false}: NavBarProps) {
+function NavBar({title="La Mia Romagna", navLinks, sideNavOnly = false}: NavBarProps) {
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
 
