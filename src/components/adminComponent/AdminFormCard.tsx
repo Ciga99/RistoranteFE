@@ -21,7 +21,7 @@ export default function AdminFormCard({ title, backUrl, onSave, saving = false, 
         <div className="flex gap-3 pt-2">
           <button
             onClick={() => navigate(backUrl)}
-            className="px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-50"
+            className="px-4 py-2 rounded border border-gray-300 text-white hover:bg-gray-50"
           >
             Annulla
           </button>

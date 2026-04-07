@@ -9,14 +9,14 @@ interface AdminHeaderFrom {
 export default function HeaderFrom({title, navigateUrl}: AdminHeaderFrom){
     const navigate = useNavigate();
     return (
-        <div className="flex items-center ">
+        <div className="flex items-center gap-2 mb-6">
             <button
             onClick={() => navigate(navigateUrl)}
-            className="flex items-center gap-2 text-gray-500 hover:text-gray-800 mb-6"
+            className="flex items-center text-gray-500 hover:text-gray-800"
             >
-            <ArrowLeft size={16} /> 
+            <ArrowLeft className="text-white hover:text-gray-800" size={16} /> 
             </button>
-            {title}
+            <span className="font-medium">{title}</span>
         </div>
     )
 }
