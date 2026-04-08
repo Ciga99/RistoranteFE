@@ -253,7 +253,6 @@ export default function AdminMenuFormPage() {
                   <Plus size={14} /> Aggiungi{selectedDishIds.size > 0 ? ` (${selectedDishIds.size})` : ""}
                 </button>
               </div>
-
             </div>
 
             {/* Pannello 2 — piatti nel menu raggruppati per categoria */}
@@ -270,20 +269,34 @@ export default function AdminMenuFormPage() {
                       {dishes.map(dish => (
                         <div
                           key={dish.id}
-                          className="flex items-center justify-between bg-white border border-gray-100 rounded px-3 py-2"
+                          className="flex flex-wrap items-center justify-between gap-2 bg-white border border-gray-100 rounded px-3 py-2"
                         >
-                          <div className="flex flex-col">
-                            <span className="text-sm font-medium text-gray-800">{dish.name}</span>
+                          <div className="flex flex-col min-w-0 flex-1">
+                            <span className="text-sm font-medium text-gray-800 truncate">{dish.name}</span>
+                            {dish.description && (
+                              <span className="text-xs text-gray-500 truncate">{dish.description}</span>
+                            )}
                             <span className="text-xs text-gray-400">€ {dish.price}</span>
                           </div>
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveDish(dish)}
-                            className="text-red-400 hover:text-red-600"
-                            title="Rimuovi dal menu"
-                          >
-                            <Trash2 size={14} />
-                          </button>
+                          <div className="flex items-center gap-2 flex-shrink-0">
+                            <span
+                              className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
+                                dish.is_active
+                                  ? "bg-green-100 text-green-700"
+                                  : "bg-red-100 text-red-500"
+                              }`}
+                            >
+                              {dish.is_active ? "Attivo" : "Non attivo"}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveDish(dish)}
+                              className="text-red-400 hover:text-red-600"
+                              title="Rimuovi dal menu"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
                         </div>
                       ))}
                     </div>
