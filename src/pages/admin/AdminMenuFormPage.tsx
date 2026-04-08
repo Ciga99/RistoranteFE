@@ -169,6 +169,18 @@ export default function AdminMenuFormPage() {
         </>
       )}
 
+      <div> 
+        <label className="block text-sm font-medium text-gray-700 mb-1">Note</label>
+        <textarea
+          name="notes"
+          value={form.notes}
+          onChange={handleChange}
+          rows={3}
+          placeholder="Aggiungi note sul menu..."
+          className={inputCls}
+        />
+      </div>
+
       <FormToggle label="Attivo" name="is_active" checked={form.is_active} onChange={handleChange} />
 
       {/* Sezione piatti */}

@@ -47,7 +47,7 @@ function NavBar({title="La Mia Romagna", navLinks, sideNavOnly = false}: NavBarP
                     after:h-full after:w-0
                     after:-z-10
                     after:bg-amber-400
-                    after:transition-all after:duration-300 after:ease-in-out
+                    after:transition-all after:duration-500 after:ease-in-out
                     hover:after:w-full
                     "
                     onClose={close}
