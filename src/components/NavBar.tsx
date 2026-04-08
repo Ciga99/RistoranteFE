@@ -39,7 +39,7 @@ function NavBar({title="La Mia Romagna", navLinks, sideNavOnly = false}: NavBarP
                 <NavLinks
                     links = {navLinks}
                     className="flex flex-col"
-                    classLink=" hover:bg-amber-500 text-gray-800 hover:text-gray-900 font-medium transition-colors p-4 border-b"
+                    classLink=" hover:bg-amber-500 text-gray-800 hover:text-gray-900 font-medium transition-colors p-4 border-b hover:translate-x-4"
                     onClose={close}
                 />
             </div>
@@ -51,7 +51,25 @@ function NavBar({title="La Mia Romagna", navLinks, sideNavOnly = false}: NavBarP
                 {title} 
             </p>
             {!sideNavOnly && (
-                <NavLinks  links = {navLinks} className="text-gray-800 hidden md:flex gap-6 text" classLink="relative pb-1 border-b-2 border-transparent hover:border-amber-500 text-gray-800 hover:text-gray-900 font-medium transition-colors" />
+                <NavLinks  links = {navLinks} 
+                    className="text-gray-800 hidden md:flex gap-6 text" 
+                    classLink="  
+                                relative
+                                text-gray-800 
+                                hover:text-gray-900 font-medium
+                                pb-1
+                                after:content-[''] 
+                                after:absolute 
+                                after:left-0 
+                                after:bottom-0
+                                after:h-[2px] 
+                                after:w-0 
+                                after:bg-amber-500
+                                after:transition-all after:duration-500 
+                                after:ease-in-out
+                                hover:after:w-full
+                            "
+                />
             )}
         </nav>
         </>

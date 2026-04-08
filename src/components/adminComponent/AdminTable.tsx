@@ -24,7 +24,7 @@ export function AdminTable<T extends { id: number }>({
   onDetail,
 }: AdminTableProps<T>) {
   return (
-    <div className="max-h-[60dvh] bg-white rounded-lg shadow overflow-x-auto">
+    <div className="max-h-[69vh] bg-white rounded-lg shadow overflow-x-auto">
       <table className="w-full text-sm">
         <thead className="bg-amber-50 text-amber-700 font-semibold">
           <tr>
