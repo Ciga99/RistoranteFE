@@ -39,7 +39,17 @@ function NavBar({title="La Mia Romagna", navLinks, sideNavOnly = false}: NavBarP
                 <NavLinks
                     links = {navLinks}
                     className="flex flex-col"
-                    classLink=" hover:bg-amber-500 text-gray-800 hover:text-gray-900 font-medium transition-colors p-4 border-b hover:translate-x-4"
+                    classLink="
+                    text-gray-800 hover:text-gray-900 font-medium p-4 border-b
+                    relative overflow-hidden
+                    after:content-['']
+                    after:absolute after:top-0 after:left-0
+                    after:h-full after:w-0
+                    after:-z-10
+                    after:bg-amber-400
+                    after:transition-all after:duration-300 after:ease-in-out
+                    hover:after:w-full
+                    "
                     onClose={close}
                 />
             </div>

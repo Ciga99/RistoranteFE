@@ -58,7 +58,7 @@ export default function RoomDetail() {
             {/* Back button */}
             <button
                 onClick={() => navigate("/rooms")}
-                className="flex items-center gap-1 hover:text-gray-900 mb-6 transition-colors bg-white/80"
+                className="flex items-center gap-1 mb-6 transition-colors bg-white/80"
             >
                 <ArrowLeft size={18} />
                 <span className="text-sm">Torna alle stanze</span>
