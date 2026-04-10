@@ -12,7 +12,6 @@ export type OpeningHour = {
 export type SpecialDay = {
   id: number;
   name: string;
-  date: string | null;
   is_show: boolean;
   is_open: boolean;
   lunch_open: string | null;
