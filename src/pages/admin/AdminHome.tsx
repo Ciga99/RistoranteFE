@@ -10,7 +10,7 @@ export default function AdminLayout(){
         { name: "Menu", path: "/admin/menu-admin" },
         { name: "Piatti", path: "/admin/dish-admin" },
         { name: "Stanze", path: "/admin/rooms-admin" }, 
-        { name: "Calendario", path: "/admin/calendar-admin" }
+        { name: "Orari", path: "/admin/hours-admin" }
         ]} />
     <Outlet/>
     </div>

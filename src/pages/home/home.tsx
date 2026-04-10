@@ -1,6 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Hero from "../../components/Hero"
 import { useNavigate } from "react-router";
+import { DEFAULT_DAYS } from "../admin/Hour";
+import { api } from "../../services/api";
+
+const fmt = (t : string | null ) => t ? t.slice(0, 5) : null;///Prendo solo i primi 5 caratteri 
 
 function HomePage() {
   const address = "Via Str. Vecchia, 8, 31028 TV, Italia";
@@ -8,7 +12,30 @@ function HomePage() {
   // Questo è un URL di esempio generico per incorporare mappe tramite iframe
   const navigate = useNavigate();
   const [bouncingCard, setBouncingCard] = useState<string | null>(null);
+  const [hours, setHours] = useState(DEFAULT_DAYS);
 
+    useEffect(() => {
+      const fetchHours = async () => {
+        try {
+          const res = await api.get("api/opening-hours/");
+          setHours(res.data.length > 0 ? res.data : DEFAULT_DAYS);
+        } catch (err) {
+          console.error("Errore nel caricamento:", err);
+          setHours(DEFAULT_DAYS);
+        }finally {
+        
+        }
+      };
+      fetchHours();
+    }, []);
+
+    const buildOrario = (hour: typeof hours[0]) => {
+      if(!hour.is_open) return "CHIUSO";
+      const lunch = hour.lunch_open && hour.lunch_close ? `${fmt(hour.lunch_open)} – ${fmt(hour.lunch_close)}` : null;
+      const dinner = hour.dinner_open && hour.dinner_close ? `${fmt(hour.dinner_open)} – ${fmt(hour.dinner_close)}` : null;
+      return [lunch, dinner].filter(Boolean).join(" / ") || "Orari non disponibili";
+    };
+    
   return (
     <div className="flex flex-col">
 
@@ -21,7 +48,7 @@ function HomePage() {
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl font-bold text-gray-800 mb-4">La nostra storia</h2>
           <p className="text-gray-600 text-lg leading-relaxed">
-            La famiglia Sanson sarà lieta di avervi come ospiti in un locale accogliente e familiare.
+            Siamo leiti di avervi come ospiti in un locale accogliente e familiare.
             Da generazioni portiamo in tavola i sapori autentici della tradizione romagnola,
             con ingredienti freschi e ricette tramandate.
           </p>
@@ -33,25 +60,14 @@ function HomePage() {
         <div className="max-w-2xl mx-auto">
           <h2 className="text-3xl font-bold text-gray-800 text-center mb-8">Orari di apertura</h2>
           <div className="bg-white rounded-2xl shadow-md overflow-hidden">
-            {[
-              { giorno: "Lunedì",    orario: "CHIUSO" },
-              { giorno: "Martedì",   orario: "CHIUSO" },
-              { giorno: "Mercoledì", orario: "11:00 – 15:00 / 17:00 – 23:00" },
-              { giorno: "Giovedì",   orario: "11:00 – 15:00 / 17:00 – 23:00" },
-              { giorno: "Venerdì",   orario: "11:00 – 15:00 / 17:00 – 23:00" },
-              { giorno: "Sabato",    orario: "11:00 – 15:00 / 17:00 – 23:00" },
-              { giorno: "Domenica",  orario: "11:00 – 15:00 / 17:00 – 23:00" },
-            ].map(({ giorno, orario }, i) => (
-              <div
-                key={giorno}
-                className={`flex justify-between px-6 py-4 ${i % 2 === 0 ? "bg-white" : "bg-gray-50"}`}
-              >
-                <span className="font-medium text-gray-700">{giorno}</span>
-                <span className="text-amber-600 font-semibold">{orario}</span>
+            {hours.map((h, i) => (
+              <div key={h.day_label} className={`flex justify-between px-6 py-4 ${i % 2 === 0 ? "bg-white" : "bg-gray-50"}`}>
+                <span className="font-medium text-gray-700">{h.day_label}</span>
+                <span className="text-amber-600 font-semibold">{buildOrario(h)}</span>
               </div>
             ))}
           </div>
-                    <p className="font-semibold text-gray-800">Telefono: +39 350 585 0022</p>
+            <p className="font-semibold text-gray-800">Telefono: +39 350 585 0022</p>
         </div>
       </section>
 
