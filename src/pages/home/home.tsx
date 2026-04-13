@@ -3,6 +3,7 @@ import Hero from "../../components/Hero"
 import { useNavigate } from "react-router";
 import { DEFAULT_DAYS } from "../admin/Hour";
 import { api } from "../../services/api";
+import type { SpecialDay } from "../../types/hours";
 
 const fmt = (t : string | null ) => t ? t.slice(0, 5) : null;///Prendo solo i primi 5 caratteri 
 
@@ -13,12 +14,16 @@ function HomePage() {
   const navigate = useNavigate();
   const [bouncingCard, setBouncingCard] = useState<string | null>(null);
   const [hours, setHours] = useState(DEFAULT_DAYS);
-
+  const [specialDays, setSpecialDays] = useState<SpecialDay[] | null>(null);
     useEffect(() => {
       const fetchHours = async () => {
         try {
           const res = await api.get("api/opening-hours/");
+          const specialDaysRes = await api.get("api/special-days/");
           setHours(res.data.length > 0 ? res.data : DEFAULT_DAYS);
+          setSpecialDays(specialDaysRes.data);
+          console.log("Giorni speciali caricati:", specialDaysRes);  
+          console.log("Giorni speciali caricati:", specialDaysRes.data);  
         } catch (err) {
           console.error("Errore nel caricamento:", err);
           setHours(DEFAULT_DAYS);
@@ -67,6 +72,24 @@ function HomePage() {
               </div>
             ))}
           </div>
+
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-800 text-center mb-8 mt-12">Giorni Speciali</h2>
+            <div className="bg-white rounded-2xl shadow-md overflow-hidden">
+              {specialDays?.map((s,i) => (
+                <div key={s.name} className={`flex justify-between px-6 py-4 ${i % 2 === 0 ? "bg-white" : "bg-gray-50"}`}>
+                  <span className="font-medium text-gray-700">{s.name}</span>
+                  <span className="text-amber-600 font-semibold">
+                      {
+                        s.is_open ? `${s.lunch_open ? `${fmt(s.lunch_open)}-` : ""} ${s.lunch_close ? `${fmt(s.lunch_close)}` : ""} 
+                        ${s.lunch_open && s.dinner_open ? " / " : ""} 
+                        ${s.dinner_open ? `${fmt(s.dinner_open)}-` : ""} ${s.dinner_close ? `${fmt(s.dinner_close)}` : ""}`.trim() : "CHIUSO"
+                      }
+                    </span>
+                </div>
+              ))}
+            </div>
+        </div>
             <p className="font-semibold text-gray-800">Telefono: +39 350 585 0022</p>
         </div>
       </section>
