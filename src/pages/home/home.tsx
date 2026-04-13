@@ -74,7 +74,9 @@ function HomePage() {
           </div>
 
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-800 text-center mb-8 mt-12">Giorni Speciali</h2>
+          {specialDays && specialDays.length > 0 && (
+          <>
+            <h2 className="text-3xl font-bold text-gray-800 text-center mb-8 mt-12">Giorni Speciali</h2>
             <div className="bg-white rounded-2xl shadow-md overflow-hidden">
               {specialDays?.map((s,i) => (
                 <div key={s.name} className={`flex justify-between px-6 py-4 ${i % 2 === 0 ? "bg-white" : "bg-gray-50"}`}>
@@ -89,6 +91,8 @@ function HomePage() {
                 </div>
               ))}
             </div>
+          </>
+          )}
         </div>
             <p className="font-semibold text-gray-800">Telefono: +39 350 585 0022</p>
         </div>
