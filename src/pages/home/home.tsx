@@ -104,7 +104,7 @@ function HomePage() {
           <h2 className="text-3xl font-bold text-gray-800 mb-8">Il nostro menu</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
-              { titolo: "Menu del Giorno",   desc: "Piatti freschi preparati ogni giorno con ingredienti di stagione.", tipo:"giorno" },
+              { titolo: "Menu Speciale",   desc: "Piatti freschi preparati ogni giorno con ingredienti di stagione.", tipo:"giorno" },
               { titolo: "Menu alla Carta",   desc: "Scegli liberamente tra i nostri classici della tradizione romagnola.", tipo:"carta"},
             ].map(({ titolo, desc, tipo }) => (
               <div

@@ -63,7 +63,7 @@ export default function AdminMenuPage() {
         <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
           m.type === "daily_menu" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"
         }`}>
-          {m.type === "daily_menu" ? "Menu del giorno" : "Carta"}
+          {m.type === "daily_menu" ? "Menu Speciale" : "Carta"}
         </span>
       ),
     },
@@ -119,7 +119,7 @@ export default function AdminMenuPage() {
           className={selectCls}
         >
           <option value="all">Tutti i tipi</option>
-          <option value="daily_menu">Menu del giorno</option>
+          <option value="daily_menu">Menu Speciale</option>
           <option value="menu_card">Carta</option>
         </select>
       </div>

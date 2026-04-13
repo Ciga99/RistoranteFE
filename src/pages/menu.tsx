@@ -9,12 +9,12 @@ const api = axios.create({ baseURL: import.meta.env.VITE_API_URL });
 
 export default function Menu() {
     const [cardMenu, setMenu] = useState<MenuType[]>([]);
-    const [dailyMenu, setDailyMenu] = useState<MenuType[]>([]);
+    const [specialMenu, setSpecialMenu] = useState<MenuType[]>([]);
     const [searchParams]  = useSearchParams();
     const [showCardMenu, setShowCardMenu] = useState(searchParams.get("tipo")!=="giorno");
     useEffect(() => {
         api.get("api/menu-card/").then((res : any) => setMenu(Array.isArray(res.data) ? res.data : [res.data]))
-        api.get("api/daily-menu/").then((res: any) => setDailyMenu(Array.isArray(res.data) ? res.data : [res.data]))
+        api.get("api/special-menu/").then((res: any) => setSpecialMenu(Array.isArray(res.data) ? res.data : [res.data]))
     }, [])
     return (
         <> 
@@ -22,16 +22,16 @@ export default function Menu() {
             inputH={50} 
             srcImg="https://images.unsplash.com/photo-1690983322857-0811d47fedfc?q=80&w=2102&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
             altIMg="Menu La Mia Romagna" title="Il nostro menu" 
-            description="Scopri i nostri piatti deliziosi, preparati con passione e ingredienti freschi. Scegli tra il nostro menu del giorno o il menu alla carta, e lasciati conquistare dai sapori autentici della tradizione romagnola." />
+            description="Scopri i nostri piatti deliziosi, preparati con passione e ingredienti freschi. Scegli tra il nostro menu speciale o il menu alla carta, e lasciati conquistare dai sapori autentici della tradizione romagnola." />
         <div className="px-4 sm:px-8 pt-8 max-w-3xl mx-auto">
             <button onClick={() => setShowCardMenu(!showCardMenu)}>
-                {showCardMenu ? "Mostra Menu Del Giorno" : "Mostra Menu Carta"}
+                {showCardMenu ? "Mostra Menu Speciale" : "Mostra Menu Carta"}
                  <ArrowLeftRight className="ml-2 inline-block" />
             </button>
         </div>
         {showCardMenu
             ? cardMenu.map(m => <MenuComponent key={m.id} menu={m} />)
-            : dailyMenu.map(m => <MenuComponent key={m.id} menu={m} />)}
+            : specialMenu.map(m => <MenuComponent key={m.id} menu={m} />)}
         </>
     );
 }
