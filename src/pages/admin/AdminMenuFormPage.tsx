@@ -9,7 +9,7 @@ import FormToggle from "../../components/adminComponent/FormToggle";
 import Spinner from "../../components/Spinner";
 
 const emptyForm = {
-  type: "menu_card" as "menu_card" | "daily_menu",
+  type: "menu_card" as "menu_card" | "special_menu",
   notes: "",
   is_active: true,
 };
@@ -131,7 +131,7 @@ export default function AdminMenuFormPage() {
         onChange={handleChange}
         options={[
           { value: "menu_card", label: "Carta" },
-          { value: "daily_menu", label: "Menu speciale" },
+          { value: "special_menu", label: "Menu speciale" },
         ]}
       />
 

@@ -1,7 +1,7 @@
 import type { MenuType, DishType } from "../../types/menu.tsx";
 
 const MENU_LABELS: Record<MenuType["type"], string> = {
-    daily_menu: "Menu Speciale",
+    special_menu: "Menu Speciale",
     menu_card:  "Menu alla Carta",
 };
 

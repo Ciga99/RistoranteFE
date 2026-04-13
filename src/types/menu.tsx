@@ -10,7 +10,7 @@ export type DishType = {
 
 export type MenuType = {
     id: number;
-    type: "daily_menu" | "menu_card";
+    type: "special_menu" | "menu_card";
     notes: string;
     date: string | null;
     day_of_week: number | null;

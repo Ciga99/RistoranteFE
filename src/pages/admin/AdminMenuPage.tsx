@@ -15,7 +15,7 @@ export default function AdminMenuPage() {
   const [menus, setMenus] = useState<MenuType[]>([]);
   const [loading, setLoading] = useState(true);
   const [filterActive, setFilterActive] = useState<"all" | "active" | "inactive">("all");
-  const [filterType, setFilterType] = useState<"all" | "daily_menu" | "menu_card">("all");
+  const [filterType, setFilterType] = useState<"all" | "special_menu" | "menu_card">("all");
 
   const fetchMenus = async () => {
     setLoading(true);
@@ -61,9 +61,9 @@ export default function AdminMenuPage() {
       header: "Tipo",
       render: (m: MenuType) => (
         <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
-          m.type === "daily_menu" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"
+          m.type === "special_menu" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"
         }`}>
-          {m.type === "daily_menu" ? "Menu Speciale" : "Carta"}
+          {m.type === "special_menu" ? "Menu Speciale" : "Carta"}
         </span>
       ),
     },
@@ -115,11 +115,11 @@ export default function AdminMenuPage() {
 
         <select
           value={filterType}
-          onChange={e => setFilterType(e.target.value as "all" | "daily_menu" | "menu_card")}
+          onChange={e => setFilterType(e.target.value as "all" | "special_menu" | "menu_card")}
           className={selectCls}
         >
           <option value="all">Tutti i tipi</option>
-          <option value="daily_menu">Menu Speciale</option>
+          <option value="special_menu">Menu Speciale</option>
           <option value="menu_card">Carta</option>
         </select>
       </div>

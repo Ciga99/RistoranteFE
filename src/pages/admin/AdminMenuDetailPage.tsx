@@ -81,9 +81,9 @@ export default function AdminMenuDetailPage() {
         <div className="flex justify-between items-start">
           <div>
             <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
-              menu.type === "daily_menu" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"
+              menu.type === "special_menu" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"
             }`}>
-              {menu.type === "daily_menu" ? "Menu Speciale" : "Carta"}
+              {menu.type === "special_menu" ? "Menu Speciale" : "Carta"}
             </span>
             <p className="mt-3 text-gray-700">{menu.notes || "Nessuna nota"}</p>
             <span className={`text-xs mt-2 inline-block px-2 py-0.5 rounded-full ${

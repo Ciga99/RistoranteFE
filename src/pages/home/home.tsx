@@ -15,11 +15,18 @@ function HomePage() {
   const [bouncingCard, setBouncingCard] = useState<string | null>(null);
   const [hours, setHours] = useState(DEFAULT_DAYS);
   const [specialDays, setSpecialDays] = useState<SpecialDay[] | null>(null);
+  const [showSpecialMenu, setSshowSpecialMenu] = useState(true);
     useEffect(() => {
       const fetchHours = async () => {
         try {
           const res = await api.get("api/opening-hours/");
           const specialDaysRes = await api.get("api/special-days/");
+          const specialMenuRes = await api.get("api/special-menu/");
+          if(specialMenuRes.data.length > 0) {
+            setSshowSpecialMenu(true);
+          }else {
+            setSshowSpecialMenu(false);
+          }
           setHours(res.data.length > 0 ? res.data : DEFAULT_DAYS);
           setSpecialDays(specialDaysRes.data);
           console.log("Giorni speciali caricati:", specialDaysRes);  
@@ -102,11 +109,12 @@ function HomePage() {
       <section className="py-16 px-6 bg-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-gray-800 mb-8">Il nostro menu</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className={`grid grid-cols-1 ${showSpecialMenu ? "md:grid-cols-2" : ""} gap-6`}>
             {[
-              { titolo: "Menu Speciale",   desc: "Piatti freschi preparati ogni giorno con ingredienti di stagione.", tipo:"giorno" },
-              { titolo: "Menu alla Carta",   desc: "Scegli liberamente tra i nostri classici della tradizione romagnola.", tipo:"carta"},
+              ...(showSpecialMenu ? [{ titolo: "Menu Speciale", desc: "Piatti freschi preparati ogni giorno con ingredienti di stagione.", tipo: "speciale" }] : []),
+              { titolo: "Menu alla Carta", desc: "Scegli liberamente tra i nostri classici della tradizione romagnola.", tipo: "carta" },
             ].map(({ titolo, desc, tipo }) => (
+              
               <div
                 onClick={() => navigate(`/menu/${tipo}`)}
                 key={titolo}
