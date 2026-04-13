@@ -86,7 +86,6 @@ export default function AdminMenuDetailPage() {
               {menu.type === "daily_menu" ? "Menu del giorno" : "Carta"}
             </span>
             <p className="mt-3 text-gray-700">{menu.notes || "Nessuna nota"}</p>
-            {menu.date && <p className="text-sm text-gray-400 mt-1">Data: {menu.date}</p>}
             <span className={`text-xs mt-2 inline-block px-2 py-0.5 rounded-full ${
               menu.is_active ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"
             }`}>

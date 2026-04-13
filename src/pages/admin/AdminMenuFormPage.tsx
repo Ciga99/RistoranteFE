@@ -8,18 +8,9 @@ import FormSelect from "../../components/adminComponent/FormSelect";
 import FormToggle from "../../components/adminComponent/FormToggle";
 import Spinner from "../../components/Spinner";
 
-const DAY_STR_TO_NUM: Record<string, number> = {
-  monday: 0, tuesday: 1, wednesday: 2, thursday: 3, friday: 4, saturday: 5, sunday: 6,
-};
-const DAY_NUM_TO_STR: Record<number, string> = {
-  0: "monday", 1: "tuesday", 2: "wednesday", 3: "thursday", 4: "friday", 5: "saturday", 6: "sunday",
-};
-
 const emptyForm = {
-  type: "menu_card" as "menu_card" | "daily_menu",
+  type: "menu_card" as "menu_special" | "daily_menu",
   notes: "",
-  date: "",
-  day_of_week: "",
   is_active: true,
 };
 
@@ -58,8 +49,6 @@ export default function AdminMenuFormPage() {
         setForm({
           type: m.type,
           notes: m.notes ?? "",
-          date: m.date ?? "",
-          day_of_week: m.day_of_week != null ? (DAY_NUM_TO_STR[m.day_of_week] ?? "") : "",
           is_active: m.is_active,
         });
         setMenuDishes(m.dishes ?? []);
@@ -89,8 +78,6 @@ export default function AdminMenuFormPage() {
     try {
       const payload = {
         ...form,
-        date: form.date || null,
-        day_of_week: form.day_of_week ? DAY_STR_TO_NUM[form.day_of_week] ?? null : null,
         dish_ids: menuDishes.map(d => d.id),
       };
       if (isEdit) {
@@ -147,27 +134,7 @@ export default function AdminMenuFormPage() {
           { value: "daily_menu", label: "Menu del giorno" },
         ]}
       />
-      {form.type === "daily_menu" && (
-        <>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Data</label>
-            <input type="date" name="date" value={form.date} onChange={handleChange} className={inputCls} />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Giorno della settimana</label>
-            <select name="day_of_week" value={form.day_of_week || ""} onChange={handleChange} className={inputCls}>
-              <option value="">Seleziona un giorno...</option>
-              <option value="monday">Lunedì</option>
-              <option value="tuesday">Martedì</option>
-              <option value="wednesday">Mercoledì</option>
-              <option value="thursday">Giovedì</option>
-              <option value="friday">Venerdì</option>
-              <option value="saturday">Sabato</option>
-              <option value="sunday">Domenica</option>
-            </select>
-          </div>
-        </>
-      )}
+
 
       <div> 
         <label className="block text-sm font-medium text-gray-700 mb-1">Note</label>

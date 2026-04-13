@@ -9,9 +9,6 @@ import FormToggle from "../../components/adminComponent/FormToggle";
 
 const selectCls = "border border-gray-300 rounded px-3 py-1.5 text-sm text-gray-700 bg-white";
 
-const DAY_LABELS: Record<number, string> = {
-  0: "Lunedì", 1: "Martedì", 2: "Mercoledì", 3: "Giovedì", 4: "Venerdì", 5: "Sabato", 6: "Domenica",
-};
 
 export default function AdminMenuPage() {
   const navigate = useNavigate();
@@ -74,18 +71,6 @@ export default function AdminMenuPage() {
       header: "Note",
       render: (m: MenuType) => <span className="text-gray-700">{m.notes || "—"}</span>,
     },
-    {
-      header: "Data",
-      render: (m: MenuType) => <span className="text-gray-600">{m.date || "—"}</span>,
-    },
-    ...(filterType !== "menu_card" ? [{
-      header: "Giorno",
-      render: (m: MenuType) => (
-        <span className="text-gray-600">
-          {m.day_of_week != null ? (DAY_LABELS[m.day_of_week] ?? "—") : "—"}
-        </span>
-      ),
-    }] : []),
     {
       header: "N° Piatti",
       render: (m: MenuType) => <span className="text-gray-600">{m.dishes?.length ?? 0}</span>,
