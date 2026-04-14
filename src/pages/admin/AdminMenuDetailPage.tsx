@@ -86,10 +86,17 @@ export default function AdminMenuDetailPage() {
               {menu.type === "special_menu" ? "Menu Speciale" : "Carta"}
             </span>
             <p className="mt-3 text-gray-700">{menu.notes || "Nessuna nota"}</p>
+
             <span className={`text-xs mt-2 inline-block px-2 py-0.5 rounded-full ${
               menu.is_active ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"
             }`}>
               {menu.is_active ? "Attivo" : "Non attivo"}
+            </span>
+                cosa
+            <span className={`text-xs mt-2 inline-block px-2 py-0.5 rounded-full ${
+              menu.show_on_menu ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"
+            }`}>
+              {menu.show_on_menu ? "Mostra nel menu" : "Non mostrare nel menu"}
             </span>
           </div>
           <button

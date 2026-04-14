@@ -3,15 +3,15 @@ import MenuComponent from "../components/menuComponent/menucomponent";
 import type { MenuType } from "../types/menu";
 import { ArrowLeftRight } from "lucide-react";
 import Hero from "../components/Hero";
-import { useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 const api = axios.create({ baseURL: import.meta.env.VITE_API_URL });
 
 export default function Menu() {
+    const { tipo } = useParams<{ tipo?: string }>();
     const [cardMenu, setMenu] = useState<MenuType[]>([]);
     const [specialMenu, setSpecialMenu] = useState<MenuType[]>([]);
-    const [searchParams]  = useSearchParams();
-    const [showCardMenu, setShowCardMenu] = useState(searchParams.get("tipo")!=="speciale");
+    const [showCardMenu, setShowCardMenu] = useState(tipo !== "speciale");
     const [haveSpecialMenu, setHaveSpecialMenu] = useState(false);
     useEffect(() => {
         api.get("api/menu-card/").then((res : any) => setMenu(Array.isArray(res.data) ? res.data : [res.data]))
@@ -20,14 +20,13 @@ export default function Menu() {
             if(res.data.length > 0) {
                 setSpecialMenu(Array.isArray(res.data) ? res.data : [res.data])
                 setHaveSpecialMenu(true);
-                setShowCardMenu(true);
+                setShowCardMenu(tipo !== "speciale");
             }else {
                 setHaveSpecialMenu(false);
                 setShowCardMenu(true);
                 setSpecialMenu([]);
             }
         })
-        console.log("showCardMenu", showCardMenu);
     }, [])
     return (
         <> 

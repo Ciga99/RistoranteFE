@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { api } from "../../services/api";
 import type { DishType } from "../../types/menu";
-import { ArrowLeft } from "lucide-react";
 import HeaderFrom from "../../components/adminComponent/HeaderForm";
 
 const DISH_TYPES = ["antipasto", "primo", "secondo", "contorno", "dolce", "bevande"] as const;
@@ -13,6 +12,7 @@ const emptyForm = {
   description: "",
   price: "",
   is_active: true,
+  show_on_menu: true,
 };
 
 const inputCls = "w-full border border-gray-300 rounded px-3 py-2 text-gray-900";
@@ -73,6 +73,11 @@ export default function AdminMenuDishFormPage() {
         <label className="flex items-center gap-2 cursor-pointer">
           <input type="checkbox" name="is_active" checked={form.is_active} onChange={handleChange} />
           <span className="text-sm text-gray-700">Attivo</span>
+        </label>
+
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" name="show_on_menu" checked={form.show_on_menu} onChange={handleChange} />
+          <span className="text-sm text-gray-700">Mostra nel menu</span>
         </label>
 
         <div className="flex gap-3 pt-2">

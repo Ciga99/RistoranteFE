@@ -15,6 +15,7 @@ export type MenuType = {
     date: string | null;
     day_of_week: number | null;
     dishes: DishType[];
+    show_on_menu: boolean;
     is_active: boolean;
 }
 

@@ -12,6 +12,7 @@ const emptyForm = {
   type: "menu_card" as "menu_card" | "special_menu",
   notes: "",
   is_active: true,
+  show_on_menu: true,
 };
 
 const DISH_CATEGORIES = ["antipasto", "primo", "secondo", "contorno", "dolce", "bevande"] as const;
@@ -50,6 +51,7 @@ export default function AdminMenuFormPage() {
           type: m.type,
           notes: m.notes ?? "",
           is_active: m.is_active,
+          show_on_menu: m.show_on_menu,
         });
         setMenuDishes(m.dishes ?? []);
       } catch (err) {
@@ -147,8 +149,12 @@ export default function AdminMenuFormPage() {
           className={inputCls}
         />
       </div>
-
-      <FormToggle label="Attivo" name="is_active" checked={form.is_active} onChange={handleChange} />
+      <div className="flex gap-3 pt-2">
+        <FormToggle label="Attivo" name="is_active" checked={form.is_active} onChange={handleChange} />
+        {/* {form.type === "special_menu" && (
+          <FormToggle label="Mostra nel sito il menu speciale" name="show_on_menu" checked={form.show_on_menu} onChange={handleChange} />
+        )} */}
+      </div>
 
       {/* Sezione piatti */}
       <div className="border-t border-gray-200 pt-4 mt-2">
