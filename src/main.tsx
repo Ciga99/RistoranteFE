@@ -20,6 +20,7 @@ import AdminRoomsFormPage from './pages/admin/AdminRoomsFormPage.tsx'
 import AdminMenuDetailPage from './pages/admin/AdminMenuDetailPage.tsx'
 import RoomDetail from './pages/RoomDetail.tsx'
 import Hour from './pages/admin/Hour.tsx'
+import PrivacyPolicy from './pages/PrivacyPolicy.tsx'
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,7 @@ const router = createBrowserRouter([
           { path: 'menu/:tipo', element: <Menu /> },
           { path: 'rooms', element: <Rooms /> },
           { path: 'rooms/:id', element: <RoomDetail /> },
+          { path: 'privacy', element: <PrivacyPolicy /> },
         ],
       },
       {
