@@ -4,7 +4,7 @@ import NavBar from "../../components/NavBar";
 export default function AdminLayout(){
     return (
     <div style={{ fontFamily: "system-ui, Avenir, Helvetica, Arial, sans-serif" }}>
-    <NavBar title='La Mia Romagna Admin' 
+    <NavBar title='Ristorante Admin' 
     sideNavOnly={true} 
     navLinks={[
         { name: "Menu", path: "/admin/menu-admin" },

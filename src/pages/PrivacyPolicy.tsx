@@ -9,7 +9,7 @@ export default function PrivacyPolicy() {
       <section className="mb-8">
         <h2 className="text-xl font-semibold text-amber-700 mb-3">1. Titolare del trattamento</h2>
         <p className="text-sm leading-relaxed">
-          Il titolare del trattamento dei dati personali è <strong>La Mia Romagna</strong>, raggiungibile
+          Il titolare del trattamento dei dati personali è <strong>Ristorante</strong>, raggiungibile
           all'indirizzo email indicato nella sezione contatti del sito.
         </p>
       </section>
